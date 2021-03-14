@@ -1,0 +1,11 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": "5431",
+  "username": "postventa",
+  "password": "postventa",
+  "database": "postventa",
+  "entities": ["build/database/entities/**/*.js"],
+  "synchronize": true,
+  "name": "postventa"
+}
