@@ -5,6 +5,7 @@ import helmet from 'helmet';
 
 import { IndexController } from './controller/index.controller';
 import { RoleController } from './controller/role.controller';
+import { UserController } from './controller/user.controller';
 
 import { createConnection } from 'typeorm';
 import compression from 'compression';
@@ -13,6 +14,7 @@ import cors from 'cors';
 class Server {
   private roleController: RoleController;
   private indexController: IndexController;
+  private userController: UserController;
 
   private apiPrefix = 'api';
 
@@ -41,11 +43,13 @@ class Server {
    */
   public async routes() {
     await createConnection('postventa');
-    this.roleController = new RoleController();
     this.indexController = new IndexController();
+    this.roleController = new RoleController();
+    this.userController = new UserController();
 
     this.app.use(this.indexController.router);
     this.app.use(`/${this.apiPrefix}/roles`, this.roleController.router);
+    this.app.use(`/${this.apiPrefix}/users`, this.userController.router);
   }
 
   /**
