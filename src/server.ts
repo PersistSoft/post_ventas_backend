@@ -6,6 +6,8 @@ import helmet from 'helmet';
 import { IndexController } from './controller/index.controller';
 import { RoleController } from './controller/role.controller';
 import { UserController } from './controller/user.controller';
+import { ProjectController } from './controller/project.controller';
+import { BuildingController } from './controller/building.controller';
 
 import { createConnection } from 'typeorm';
 import compression from 'compression';
@@ -15,6 +17,8 @@ class Server {
   private roleController: RoleController;
   private indexController: IndexController;
   private userController: UserController;
+  private projectController: ProjectController;
+  private buildingController: BuildingController;
 
   private apiPrefix = 'api';
 
@@ -46,10 +50,14 @@ class Server {
     this.indexController = new IndexController();
     this.roleController = new RoleController();
     this.userController = new UserController();
+    this.projectController = new ProjectController();
+    this.buildingController = new BuildingController();
 
     this.app.use(this.indexController.router);
     this.app.use(`/${this.apiPrefix}/roles`, this.roleController.router);
     this.app.use(`/${this.apiPrefix}/users`, this.userController.router);
+    this.app.use(`/${this.apiPrefix}/projects`, this.projectController.router);
+    this.app.use(`/${this.apiPrefix}/buildings`, this.buildingController.router);
   }
 
   /**
