@@ -9,6 +9,7 @@ import { UserController } from './controller/user.controller';
 import { ProjectController } from './controller/project.controller';
 import { BuildingController } from './controller/building.controller';
 import { AparmentsController } from './controller/aparments.controller';
+import { AparmentTypeController } from './controller/aparmentType.controller';
 import { ParkingController } from './controller/parking.controller';
 import { StorageUnitController } from './controller/storage_unit.controller';
 import { ClientController } from './controller/clients.controller';
@@ -33,6 +34,7 @@ class Server {
   private warrantyController: WarrantyController;
   private warrantyTypeController: WarrantyTypeController;
   private statusController: StatusController;
+  private aparmentTypeController: AparmentTypeController;
 
   private apiPrefix = 'api';
 
@@ -67,6 +69,7 @@ class Server {
     this.projectController = new ProjectController();
     this.buildingController = new BuildingController();
     this.aparmentsController = new AparmentsController();
+    this.aparmentTypeController = new AparmentTypeController();
     this.parkingController = new ParkingController();
     this.storageUnitController = new StorageUnitController();
     this.clientController = new ClientController();
@@ -80,12 +83,13 @@ class Server {
     this.app.use(`/${this.apiPrefix}/projects`, this.projectController.router);
     this.app.use(`/${this.apiPrefix}/buildings`, this.buildingController.router);
     this.app.use(`/${this.apiPrefix}/aparments`, this.aparmentsController.router);
+    this.app.use(`/${this.apiPrefix}/aparmentstypes`, this.aparmentTypeController.router);
     this.app.use(`/${this.apiPrefix}/parking`, this.parkingController.router);
     this.app.use(`/${this.apiPrefix}/storage`, this.storageUnitController.router);
     this.app.use(`/${this.apiPrefix}/client`, this.clientController.router);
     this.app.use(`/${this.apiPrefix}/warranty`, this.warrantyController.router);
     this.app.use(`/${this.apiPrefix}/warrantytype`, this.warrantyTypeController.router);
-    this.app.use(`/${this.apiPrefix}/status`, this.warrantyTypeController.router);
+    this.app.use(`/${this.apiPrefix}/status`, this.statusController.router);
   }
 
   /**
