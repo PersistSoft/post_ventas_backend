@@ -1,27 +1,27 @@
 import { Request, Response, Router } from 'express';
-import { ParkingService } from '../services/parking.service';
+import { StorageUnitService } from '../services/storage_unit.service';
 
-export class ParkingController {
+export class StorageUnitController {
   public router: Router;
-  private parkingService: ParkingService;
+  private storageUnitService: StorageUnitService;
 
   constructor() {
     this.init();
   }
 
   private init() {
-    this.parkingService = new ParkingService();
+    this.storageUnitService = new StorageUnitService();
     this.router = Router();
     this.routes();
   }
 
   /**
-   * Get all Parkings
+   * Get all Storage Units
    */
 
   public parkings = async (req: Request, res: Response) => {
-    let parking = await this.parkingService.findAll();
-    res.send(parking).json;
+    let storage_units = await this.storageUnitService.findAll();
+    res.send(storage_units).json;
   };
 
   /**
