@@ -1,5 +1,5 @@
 import { EntityRepository, Repository } from 'typeorm';
-import { WarrantyType } from './../database/entities/warrantyType';
+import { Warranty } from '../database/entities/warranty';
 
-@EntityRepository(WarrantyType)
-export class BuildingRepository extends Repository<WarrantyType> {}
+@EntityRepository(Warranty)
+export class WarrantyRepository extends Repository<Warranty> {}
