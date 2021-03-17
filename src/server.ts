@@ -13,6 +13,7 @@ import { ParkingController } from './controller/parking.controller';
 import { StorageUnitController } from './controller/storage_unit.controller';
 import { ClientController } from './controller/clients.controller';
 import { WarrantyController } from './controller/warranty.controller';
+import { WarrantyTypeController } from './controller/warratyType.controller';
 
 import { createConnection } from 'typeorm';
 import compression from 'compression';
@@ -29,6 +30,7 @@ class Server {
   private storageUnitController: StorageUnitController;
   private clientController: ClientController;
   private warrantyController: WarrantyController;
+  private warrantyTypeController: WarrantyTypeController;
 
   private apiPrefix = 'api';
 
@@ -67,6 +69,7 @@ class Server {
     this.storageUnitController = new StorageUnitController();
     this.clientController = new ClientController();
     this.warrantyController = new WarrantyController();
+    this.warrantyTypeController = new WarrantyTypeController();
 
     this.app.use(this.indexController.router);
     this.app.use(`/${this.apiPrefix}/roles`, this.roleController.router);
@@ -78,6 +81,7 @@ class Server {
     this.app.use(`/${this.apiPrefix}/storage`, this.storageUnitController.router);
     this.app.use(`/${this.apiPrefix}/client`, this.clientController.router);
     this.app.use(`/${this.apiPrefix}/warranty`, this.warrantyController.router);
+    this.app.use(`/${this.apiPrefix}/warrantytype`, this.warrantyTypeController.router);
   }
 
   /**

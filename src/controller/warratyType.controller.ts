@@ -1,8 +1,8 @@
 import { Request, Response, Router } from 'express';
-import { WarrantyService } from './../services/warranty.service';
+import { WarrantyTypeService } from './../services/warrantyType.service';
 
-export class WarrantyController {
-  private warrantyService: WarrantyService;
+export class WarrantyTypeController {
+  private warrantyTypeService: WarrantyTypeService;
   public router: Router;
 
   constructor() {
@@ -10,18 +10,18 @@ export class WarrantyController {
   }
 
   init() {
-    this.warrantyService = new WarrantyService();
+    this.warrantyTypeService = new WarrantyTypeService();
     this.router = Router();
     this.routes();
   }
 
   /**
-   * Get all Warranties
+   * Get all WarrantiesTypes
    */
 
-  public warranties = async (req: Request, res: Response) => {
-    let warranties = await this.warrantyService.findAll();
-    res.send(warranties).json;
+  public warrantiesTypes = async (req: Request, res: Response) => {
+    let warrantiesTypes = await this.warrantyTypeService.findAll();
+    res.send(warrantiesTypes).json;
   };
 
   /**
@@ -46,7 +46,7 @@ export class WarrantyController {
   }
 
   public routes() {
-    this.router.get('/', this.warranties);
+    this.router.get('/', this.warrantiesTypes);
     this.router.post('/', this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);
