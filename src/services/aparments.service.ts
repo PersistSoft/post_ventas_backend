@@ -7,7 +7,7 @@ export class AparmentService {
   private aparmentRepository: AparmentRepository;
 
   constructor() {
-    this.aparmentRepository = getConnection('postventas').getCustomRepository(AparmentRepository);
+    this.aparmentRepository = getConnection('postventa').getCustomRepository(AparmentRepository);
   }
 
   /**

@@ -10,6 +10,8 @@ import {
 
 import { Building } from './building';
 import { Warranty } from './warranty';
+import { Parking } from './parkings';
+import { StorageUnit } from './storage_unit';
 
 @Entity('aparments')
 export class Aparment {
@@ -33,4 +35,10 @@ export class Aparment {
 
   @OneToMany(() => Warranty, (warranty) => warranty.aparment)
   warranties: Warranty[];
+
+  @OneToMany(() => Parking, (parking) => parking.aparment)
+  parking: Parking[];
+
+  @OneToMany(() => StorageUnit, (storageUnit) => storageUnit.aparment)
+  storageUnits: StorageUnit[];
 }

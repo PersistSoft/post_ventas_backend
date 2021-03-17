@@ -4,25 +4,22 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany,
+  OneToOne,
   ManyToOne,
   ManyToMany,
   JoinTable,
+  JoinColumn,
 } from 'typeorm';
 
-import { User } from './user';
-import { Project } from './project';
 import { Aparment } from './aparments';
 import { Client } from './client';
 import { warrantyType } from './warrantyType';
+import { Status } from './status';
 
 @Entity('warranties')
 export class Warranty {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column()
-  isValid: boolean;
 
   @Column({ name: 'close_at' })
   closeAt: Date;
@@ -55,4 +52,8 @@ export class Warranty {
     },
   })
   aparments: warrantyType[];
+
+  @OneToOne(() => Status, (status) => status.warranty)
+  @JoinColumn()
+  status: Status;
 }
