@@ -9,6 +9,7 @@ import { UserController } from './controller/user.controller';
 import { ProjectController } from './controller/project.controller';
 import { BuildingController } from './controller/building.controller';
 import { AparmentsController } from './controller/aparments.controller';
+import { ParkingController } from './controller/parking.controller';
 
 import { createConnection } from 'typeorm';
 import compression from 'compression';
@@ -21,6 +22,7 @@ class Server {
   private projectController: ProjectController;
   private buildingController: BuildingController;
   private aparmentsController: AparmentsController;
+  private parkingController: ParkingController;
 
   private apiPrefix = 'api';
 
@@ -55,6 +57,7 @@ class Server {
     this.projectController = new ProjectController();
     this.buildingController = new BuildingController();
     this.aparmentsController = new AparmentsController();
+    this.parkingController = new ParkingController();
 
     this.app.use(this.indexController.router);
     this.app.use(`/${this.apiPrefix}/roles`, this.roleController.router);
@@ -62,6 +65,7 @@ class Server {
     this.app.use(`/${this.apiPrefix}/projects`, this.projectController.router);
     this.app.use(`/${this.apiPrefix}/buildings`, this.buildingController.router);
     this.app.use(`/${this.apiPrefix}/aparments`, this.aparmentsController.router);
+    this.app.use(`/${this.apiPrefix}/parking`, this.parkingController.router);
   }
 
   /**
