@@ -2,8 +2,20 @@ import 'reflect-metadata';
 import express from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
-import {IndexController} from './controller/index.controller';
-import { RoleController} from './controller/role.controller';
+
+import { IndexController } from './controller/index.controller';
+import { RoleController } from './controller/role.controller';
+import { UserController } from './controller/user.controller';
+import { ProjectController } from './controller/project.controller';
+import { BuildingController } from './controller/building.controller';
+import { AparmentsController } from './controller/aparments.controller';
+import { AparmentTypeController } from './controller/aparmentType.controller';
+import { ParkingController } from './controller/parking.controller';
+import { StorageUnitController } from './controller/storage_unit.controller';
+import { ClientController } from './controller/clients.controller';
+import { WarrantyController } from './controller/warranty.controller';
+import { WarrantyTypeController } from './controller/warratyType.controller';
+import { StatusController } from './controller/status.controller';
 
 import { createConnection } from 'typeorm';
 import compression from 'compression';
@@ -11,14 +23,24 @@ import cors from 'cors';
 
 class Server {
   private roleController: RoleController;
-  private indexController: IndexController
+  private indexController: IndexController;
+  private userController: UserController;
+  private projectController: ProjectController;
+  private buildingController: BuildingController;
+  private aparmentsController: AparmentsController;
+  private parkingController: ParkingController;
+  private storageUnitController: StorageUnitController;
+  private clientController: ClientController;
+  private warrantyController: WarrantyController;
+  private warrantyTypeController: WarrantyTypeController;
+  private statusController: StatusController;
+  private aparmentTypeController: AparmentTypeController;
 
   private apiPrefix = 'api';
-  private rolePrefix = 'roles';
 
   private app: express.Application;
 
-  constructor(){
+  constructor() {
     this.app = express();
     this.configuration();
     this.routes();
@@ -27,7 +49,7 @@ class Server {
   /**
    * Method to configure the server
    */
-  public configuration(){
+  public configuration() {
     this.app.set('port', process.env.PORT || 3001);
     this.app.use(morgan('dev'));
     this.app.use(express.json());
@@ -39,20 +61,41 @@ class Server {
   /**
    * Method to configure the routes
    */
-  public async routes(){
-    await createConnection("postventa");
-    this.roleController = new RoleController();
+  public async routes() {
+    await createConnection('postventa');
     this.indexController = new IndexController();
+    this.roleController = new RoleController();
+    this.userController = new UserController();
+    this.projectController = new ProjectController();
+    this.buildingController = new BuildingController();
+    this.aparmentsController = new AparmentsController();
+    this.aparmentTypeController = new AparmentTypeController();
+    this.parkingController = new ParkingController();
+    this.storageUnitController = new StorageUnitController();
+    this.clientController = new ClientController();
+    this.warrantyController = new WarrantyController();
+    this.warrantyTypeController = new WarrantyTypeController();
+    this.statusController = new StatusController();
 
     this.app.use(this.indexController.router);
-    this.app.use(`/${this.apiPrefix}/${this.rolePrefix}`,this.roleController.router);
-
-  } 
+    this.app.use(`/${this.apiPrefix}/roles`, this.roleController.router);
+    this.app.use(`/${this.apiPrefix}/users`, this.userController.router);
+    this.app.use(`/${this.apiPrefix}/projects`, this.projectController.router);
+    this.app.use(`/${this.apiPrefix}/buildings`, this.buildingController.router);
+    this.app.use(`/${this.apiPrefix}/aparments`, this.aparmentsController.router);
+    this.app.use(`/${this.apiPrefix}/aparmentstypes`, this.aparmentTypeController.router);
+    this.app.use(`/${this.apiPrefix}/parking`, this.parkingController.router);
+    this.app.use(`/${this.apiPrefix}/storage`, this.storageUnitController.router);
+    this.app.use(`/${this.apiPrefix}/client`, this.clientController.router);
+    this.app.use(`/${this.apiPrefix}/warranty`, this.warrantyController.router);
+    this.app.use(`/${this.apiPrefix}/warrantytype`, this.warrantyTypeController.router);
+    this.app.use(`/${this.apiPrefix}/status`, this.statusController.router);
+  }
 
   /**
    * Used to start the server
    */
-  public start(){
+  public start() {
     this.app.listen(this.app.get('port'), () => {
       console.log(`Server is listening ${this.app.get('port')} port.`);
     });
