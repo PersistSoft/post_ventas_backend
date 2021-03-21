@@ -7,19 +7,21 @@ import {
   ManyToOne,
   ManyToMany,
   JoinTable,
+  Unique,
 } from 'typeorm';
 
 import { Role } from './Role';
 import { Project } from './project';
 
 @Entity('users')
+@Unique(['username'])
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   username: string;
-  
+
   @Column()
   name: string;
 

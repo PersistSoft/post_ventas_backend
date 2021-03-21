@@ -1,6 +1,7 @@
 import passport from "passport";
 import passportLocal from "passport-local";
 import { UserService } from "./../../services/users.service";
+import bcrypt from 'bcryptjs';
 
 const LocalStrategy = passportLocal.Strategy;
 
@@ -11,12 +12,12 @@ passport.use(new LocalStrategy(
       const user = await userService.findByUsername(username);
 
       if (!user) {
-        console.error(':::: Don\'t find user');
         return done(null, false); 
       }
 
-      if(password !== user.password){
-        console.error(':::: Password error');
+      const verified = bcrypt.compareSync(password, user.password);
+      
+      if(!verified){
         return done(null, false);
       }
 
