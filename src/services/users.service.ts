@@ -15,4 +15,12 @@ export class UserService {
     const users = await this.userRepository.find();
     return users;
   };
+
+    /**
+   *
+   */
+  public findByUsername = async (username: string) => {
+    const user = await this.userRepository.findByUsername(username);
+    return user;
+  };
 }

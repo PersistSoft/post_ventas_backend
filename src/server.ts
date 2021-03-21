@@ -16,10 +16,15 @@ import { ClientController } from './controller/clients.controller';
 import { WarrantyController } from './controller/warranty.controller';
 import { WarrantyTypeController } from './controller/warratyType.controller';
 import { StatusController } from './controller/status.controller';
-
+import { AuthController } from './controller/auth.controller';
+import { Configuration } from './config';
 import { createConnection } from 'typeorm';
+import dotenv from 'dotenv';
+
 import compression from 'compression';
 import cors from 'cors';
+
+dotenv.config();
 
 class Server {
   private roleController: RoleController;
@@ -35,6 +40,7 @@ class Server {
   private warrantyTypeController: WarrantyTypeController;
   private statusController: StatusController;
   private aparmentTypeController: AparmentTypeController;
+  private authController: AuthController;
 
   private apiPrefix = 'api';
 
@@ -62,7 +68,9 @@ class Server {
    * Method to configure the routes
    */
   public async routes() {
-    await createConnection('postventa');
+    const configuration = new Configuration();
+    await createConnection(configuration.databaseConfiguration());
+
     this.indexController = new IndexController();
     this.roleController = new RoleController();
     this.userController = new UserController();
@@ -76,6 +84,7 @@ class Server {
     this.warrantyController = new WarrantyController();
     this.warrantyTypeController = new WarrantyTypeController();
     this.statusController = new StatusController();
+    this.authController = new AuthController();
 
     this.app.use(this.indexController.router);
     this.app.use(`/${this.apiPrefix}/roles`, this.roleController.router);
@@ -90,6 +99,7 @@ class Server {
     this.app.use(`/${this.apiPrefix}/warranty`, this.warrantyController.router);
     this.app.use(`/${this.apiPrefix}/warrantytype`, this.warrantyTypeController.router);
     this.app.use(`/${this.apiPrefix}/status`, this.statusController.router);
+    this.app.use(`/${this.apiPrefix}/auth`, this.authController.router);
   }
 
   /**
