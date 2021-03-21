@@ -13,7 +13,7 @@ import {
 
 import { Aparment } from './aparments';
 import { Client } from './client';
-import { warrantyType } from './warrantyType';
+import { WarrantyType } from './warrantyType';
 import { Status } from './status';
 
 @Entity('warranties')
@@ -39,7 +39,7 @@ export class Warranty {
   @ManyToOne(() => Aparment, (aparment) => aparment.warranties)
   aparment: Aparment;
 
-  @ManyToMany((type) => warrantyType, { eager: true })
+  @ManyToMany((type) => WarrantyType, { eager: true })
   @JoinTable({
     name: 'warranty_warranty_type',
     joinColumn: {
@@ -51,7 +51,7 @@ export class Warranty {
       referencedColumnName: 'id',
     },
   })
-  aparments: warrantyType[];
+  aparments: WarrantyType[];
 
   @OneToOne(() => Status, (status) => status.warranty)
   @JoinColumn()

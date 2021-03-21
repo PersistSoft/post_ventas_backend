@@ -2,6 +2,8 @@ import 'reflect-metadata';
 import express from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
+const swaggerUi = require('swagger-ui-express');
+import * as swaggerDocument from './swagger.json';
 
 import { IndexController } from './controller/index.controller';
 import { RoleController } from './controller/role.controller';
@@ -90,6 +92,7 @@ class Server {
     this.app.use(`/${this.apiPrefix}/warranty`, this.warrantyController.router);
     this.app.use(`/${this.apiPrefix}/warrantytype`, this.warrantyTypeController.router);
     this.app.use(`/${this.apiPrefix}/status`, this.statusController.router);
+    this.app.use(`/swagger`, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   }
 
   /**
