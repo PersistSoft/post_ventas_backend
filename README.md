@@ -25,20 +25,17 @@ npm i
 
 ### Configure database
 
-You could find ormconfig.js file to configure the database
+Create **.env** file to configure the database connection.
 
 ```
-{
-  "type": "postgres",
-  "host": "localhost",
-  "port": "5431",
-  "username": "postventa",
-  "password": "postventa",
-  "database": "postventa",
-  "entities": ["build/database/entities/**/*.js"],
-  "synchronize": true,
-  "name": "postventa"
-}
+ type=
+ host=
+ port=
+ username=
+ password=
+ database=
+ connectionName=
+ PORT=
 ```
 
 ### Start development

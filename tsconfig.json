@@ -25,17 +25,13 @@
     // "isolatedModules": true,                     /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */
 
     /* Strict Type-Checking Options */
-<<<<<<< HEAD
     "strict": true,                                 /* Enable all strict type-checking options. */
     "noImplicitAny": false,                       /* Raise error on expressions and declarations with an implied 'any' type. */
-=======
-    "strict": true /* Enable all strict type-checking options. */,
     // "noImplicitAny": true,                       /* Raise error on expressions and declarations with an implied 'any' type. */
->>>>>>> 83e4d447592ae98702a3ffb4ce725a2028c964b0
     // "strictNullChecks": true,                    /* Enable strict null checks. */
     // "strictFunctionTypes": true,                 /* Enable strict checking of function types. */
     // "strictBindCallApply": true,                 /* Enable strict 'bind', 'call', and 'apply' methods on functions. */
-    "strictPropertyInitialization": false /* Enable strict checking of property initialization in classes. */,
+    "strictPropertyInitialization": false, /* Enable strict checking of property initialization in classes. */
     // "noImplicitThis": true,                      /* Raise error on 'this' expressions with an implied 'any' type. */
     // "alwaysStrict": true,                        /* Parse in strict mode and emit "use strict" for each source file. */
 
