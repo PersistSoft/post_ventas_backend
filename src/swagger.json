@@ -1,0 +1,82 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "postventas backend",
+    "description": "project",
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "host": "localhost:3000",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "Post Ventas",
+      "description": "API to manage the way we do after sell contact with the owner "
+    }
+  ],
+  "schemes": ["http", "https"],
+  "consumes": ["application/json"],
+  "produces": ["aplication/json"],
+  "paths": {
+    "/roles": {
+      "get": {
+        "tags": ["Roles"],
+        "summary": "Get All Roles",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "shema": {
+              "$ref": "#/definitions/rol"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Roles"],
+        "summary": "Create a Role",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Create a new Rol",
+            "schema": {
+              "$ref": "#/definitions/rol"
+            }
+          }
+        ],
+        "produces": ["aplication/json"],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "shema": {
+              "$ref": "#/definitions/rol"
+            }
+          },
+          "400": {
+            "decription": "Failed . Bad POST data"
+          }
+        }
+      }
+    }
+  },
+
+  "definitions": {
+    "id": {
+      "propierties": {
+        "id": {
+          "type": "number"
+        }
+      }
+    },
+    "rol": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
