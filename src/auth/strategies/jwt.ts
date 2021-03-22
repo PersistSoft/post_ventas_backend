@@ -1,24 +1,24 @@
 import passport from 'passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
-
-//const passport = require('passport');
-//const { Strategy, ExtractJwt } = require('passport-jwt');
+import { UserService } from './../../services/users.service';
 
 passport.use( new Strategy({
-  secretOrKey: 'campos',
+  secretOrKey: 'secret',
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
 },
- async function (tokenPayload, cb){
-   //TODO user service 
+ async function (tokenPayload, done){
    try {
-    //TODO
-    //find user 
-    //return callBack('Unauthorized', false);
-
-    return cb({name: 'camposb', role: 'Admin'});
+    let userService = new UserService();
+    const user = await userService.findByUsername(tokenPayload.username);
+    
+    if(!user){
+      return done('Error', false);
+    }
+    
+    return done(null, { ...user, role: tokenPayload.role });
     
    } catch (error) {
-     return cb(error);
+     return done(error);
    }
  }
- ));
+));

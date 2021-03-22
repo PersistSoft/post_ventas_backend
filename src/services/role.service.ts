@@ -9,10 +9,15 @@ export class RoleService {
   }
 
   /**
-   * 
+   * Find all roles
    */
   public findAll = async () => {
     const blueprints = await this.roleRepository.find();
     return blueprints;
-  } 
+  }
+
+  public findById = async (id: number) => {
+    const role = await this.roleRepository.findById(id);
+    return role;
+  }
 }

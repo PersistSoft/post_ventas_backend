@@ -5,6 +5,7 @@ import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import '../auth/strategies/basic';
 import { UserDto } from '../dto/user.dto';
+import Boom from '@hapi/boom';
 
 export class AuthController {
   public router: Router;
@@ -27,11 +28,14 @@ export class AuthController {
    * @param next 
    */
   public signUp = async(req: Request, res: Response, next: NextFunction) => {
-    const user = req.body as UserDto;
+    try {
+      const userDto = req.body as UserDto;
+      const user = await this.userService.save(userDto);
     
-    this.userService.save(user);
-    
-    return res.status(200).json({ 'name': 'joseluis' });
+      return res.status(200).json(user);
+    } catch (error) {
+      next(Boom.badRequest(error));
+    }
   }
 
   /**
@@ -54,7 +58,7 @@ export class AuthController {
         sub: user.id,
         username: user.username,
         email: user.email,
-        role: user.rol || []
+        role: user.role.name
       }
 
       const token = jwt.sign(payload, 'secret', {

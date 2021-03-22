@@ -8,6 +8,7 @@ import {
   ManyToMany,
   JoinTable,
   Unique,
+  JoinColumn,
 } from 'typeorm';
 
 import { Role } from './Role';
@@ -40,8 +41,9 @@ export class User {
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
 
-  @ManyToOne(() => Role, (role) => role.users)
-  rol: Role;
+  @ManyToOne(() => Role, { eager: true })
+  @JoinColumn([{ name: 'id_role', referencedColumnName: 'id' }])
+  role: Role
 
   @ManyToMany((type) => Project, { eager: true })
   @JoinTable({
