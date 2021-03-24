@@ -6,6 +6,8 @@ import jwt from 'jsonwebtoken';
 import '../auth/strategies/basic';
 import { UserDto } from '../dto/user.dto';
 import Boom from '@hapi/boom';
+import { SignUpSchema } from './../utils/schema/signUp.schema';
+import { validationHandler } from './../utils/middleware/schemaValidation';
 
 export class AuthController {
   public router: Router;
@@ -72,6 +74,6 @@ export class AuthController {
 
   public routes(){
     this.router.post('/login', this.login);
-    this.router.post('/signUp', this.signUp);
+    this.router.post('/signUp', validationHandler(SignUpSchema), this.signUp);
   }
 }
