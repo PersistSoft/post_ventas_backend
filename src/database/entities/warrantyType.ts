@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Unique } from 'typeorm';
 
 @Entity('warranty_type')
+@Unique(['name'])
 export class WarrantyType {
   @PrimaryGeneratedColumn()
   id: number;
