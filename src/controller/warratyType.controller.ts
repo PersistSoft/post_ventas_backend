@@ -1,5 +1,9 @@
-import { Request, Response, Router } from 'express';
+import Boom from '@hapi/boom';
+import { NextFunction, Request, Response, Router } from 'express';
+import { WarrantyTypeDto } from '../dto/warrantyType.dto';
 import { WarrantyTypeService } from './../services/warrantyType.service';
+import { validationHandler } from './../utils/middleware/schemaValidation';
+import { WarrantyTypeSchema } from './../utils/schema/types.schema';
 
 export class WarrantyTypeController {
   private warrantyTypeService: WarrantyTypeService;
@@ -21,14 +25,22 @@ export class WarrantyTypeController {
 
   public warrantiesTypes = async (req: Request, res: Response) => {
     let warrantiesTypes = await this.warrantyTypeService.findAll();
-    res.send(warrantiesTypes).json;
+    res.status(200).json(warrantiesTypes);
   };
 
   /**
    * Crete new Users
    */
-  public create(req: Request, res: Response) {
-    res.send('create');
+  public create = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      
+      let warrantyType = req.body as WarrantyTypeDto;
+      warrantyType = await this.warrantyTypeService.create(warrantyType);
+      res.status(201).json(warrantyType);
+
+    } catch (error) {
+      next(Boom.badImplementation(error)); 
+    }
   }
 
   /**
@@ -46,7 +58,7 @@ export class WarrantyTypeController {
   }
 
   public routes() {
-    this.router.get('/', this.warrantiesTypes);
+    this.router.get('/', validationHandler(WarrantyTypeSchema), this.warrantiesTypes);
     this.router.post('/', this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);

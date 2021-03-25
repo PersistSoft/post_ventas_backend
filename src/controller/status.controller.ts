@@ -1,5 +1,9 @@
-import { Request, Response, Router } from 'express';
+import Boom from '@hapi/boom';
+import { NextFunction, Request, Response, Router } from 'express';
+import { StatusDto } from '../dto/status.dto';
 import { StatusService } from '../services/status.service';
+import { validationHandler} from './../utils/middleware/schemaValidation';
+import { StatusSchema } from './../utils/schema/types.schema';
 
 export class StatusController {
   public router: Router;
@@ -21,14 +25,22 @@ export class StatusController {
 
   public status = async (req: Request, res: Response) => {
     let status = await this.statusService.findAll();
-    res.send(status).json;
+    res.status(200).json(status);
   };
 
   /**
    * Crete new Status
    */
-  public create(req: Request, res: Response) {
-    res.send('create');
+  public create = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+      let status = req.body as StatusDto;
+      status = await this.statusService.create(status);
+      res.status(201).json(status);
+
+    } catch (error) {
+      next(Boom.badImplementation(error))
+    }
   }
 
   /**
@@ -46,7 +58,7 @@ export class StatusController {
   }
 
   public routes() {
-    this.router.get('/', this.status);
+    this.router.get('/', validationHandler(StatusSchema), this.status);
     this.router.post('/', this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);

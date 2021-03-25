@@ -1,4 +1,6 @@
-import { getCustomRepository, getConnection } from 'typeorm';
+import { getConnection } from 'typeorm';
+import { ApartmentTypeDto } from '../dto/apartmentType.dto';
+import { ApartmentTypeMapper } from '../mapper/apartmentType.mapper';
 
 import { AparmentTypeRepository } from './../repositories/aparmentType.repository';
 
@@ -16,4 +18,12 @@ export class AparmentTypeService {
     const aparmentsTypes = this.aparmentTypeRepository.find();
     return aparmentsTypes;
   };
+
+  public create = async (apartmentTypeDto: ApartmentTypeDto) => {
+    let newApartmentType = ApartmentTypeMapper.toEntity(apartmentTypeDto);
+    
+    newApartmentType = await this.aparmentTypeRepository.save(newApartmentType);
+
+    return ApartmentTypeMapper.toOutputDto(newApartmentType);
+  }
 }

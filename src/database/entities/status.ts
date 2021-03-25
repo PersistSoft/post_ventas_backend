@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, Unique } from 'typeorm';
 import { Warranty } from './warranty';
 
 @Entity('status')
+@Unique(['name'])
 export class Status {
   @PrimaryGeneratedColumn()
   id: number;
