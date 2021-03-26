@@ -1,9 +1,11 @@
-import { Request, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
+import { ProjectDto } from '../dto/project.dto';
 import { ProjectService } from './../services/projects.service';
+import Boom from '@hapi/boom';
 
 export class ProjectController {
-  private projectService: ProjectService;
   public router: Router;
+  private projectService: ProjectService;
 
   constructor() {
     this.init();
@@ -27,9 +29,18 @@ export class ProjectController {
   /**
    * Crete new Project
    */
-  public create(req: Request, res: Response) {
-    res.send('create');
-  }
+  public create = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      console.log('req.body', req.body);
+      const project = req.body as ProjectDto;
+      console.log('project', project);
+      const projectDto = await this.projectService.create(project);
+      console.log('projectDto', projectDto);
+      res.status(201).send(projectDto);
+    } catch (error) {
+      next(Boom.badImplementation(error));
+    }
+  };
 
   /**
    * Update Project
@@ -47,5 +58,8 @@ export class ProjectController {
 
   public routes() {
     this.router.get('/', this.projects);
+    this.router.post('/', this.create);
+    this.router.put('/:id', this.update);
+    this.router.delete('/:id', this.delete);
   }
 }
