@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   OneToMany,
   ManyToOne,
+  Unique,
 } from 'typeorm';
 
 import { User } from './user';
@@ -13,6 +14,7 @@ import { Project } from './project';
 import { Aparment } from './aparments';
 
 @Entity('buildings')
+@Unique(['name'])
 export class Building {
   @PrimaryGeneratedColumn()
   id: number;
@@ -24,7 +26,7 @@ export class Building {
   floors: number;
 
   @Column({ name: 'aparments_number' })
-  aparmentsNumer: number;
+  aparmentsNumber: number;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;

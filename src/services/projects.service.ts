@@ -17,12 +17,18 @@ export class ProjectService {
     const projects = await this.projectRepository.find();
     return projects;
   };
-
+  /**
+   * Find one by projects
+   * @param {integer} id project id
+   */
+  public findById = async (idProject: number) => {
+    const project = await this.projectRepository.findOne({ id: idProject });
+    return project;
+  };
   /**
    * Create a Project
    */
   public create = async (project: ProjectDto) => {
-    console.log('create');
     let newProject = ProjectMapper.toEntity(project);
     newProject = await this.projectRepository.save(newProject);
 

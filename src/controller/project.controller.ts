@@ -1,7 +1,10 @@
 import { NextFunction, Request, Response, Router } from 'express';
+import Boom from '@hapi/boom';
+
+import { validationHandler } from './../utils/middleware/schemaValidation';
 import { ProjectDto } from '../dto/project.dto';
 import { ProjectService } from './../services/projects.service';
-import Boom from '@hapi/boom';
+import { ProjectSchema } from '../utils/schema/project.schema';
 
 export class ProjectController {
   public router: Router;
@@ -31,11 +34,10 @@ export class ProjectController {
    */
   public create = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log('req.body', req.body);
       const project = req.body as ProjectDto;
-      console.log('project', project);
+
       const projectDto = await this.projectService.create(project);
-      console.log('projectDto', projectDto);
+
       res.status(201).send(projectDto);
     } catch (error) {
       next(Boom.badImplementation(error));
@@ -58,7 +60,7 @@ export class ProjectController {
 
   public routes() {
     this.router.get('/', this.projects);
-    this.router.post('/', this.create);
+    this.router.post('/', validationHandler(ProjectSchema), this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);
   }
