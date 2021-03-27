@@ -1,9 +1,17 @@
-import { Request, Response, Router } from 'express';
+import Boom from '@hapi/boom';
+import { NextFunction, Request, Response, Router } from 'express';
+import { validationHandler } from './../utils/middleware/schemaValidation';
+
+import { BuildingDto } from '../dto/building.dto';
+import { BuildingSchema } from './../utils/schema/building.schema';
+import { Project } from '../database/entities/project';
 import { BuildingService } from '../services/building.service';
+import { ProjectService } from './../services/projects.service';
 
 export class BuildingController {
   public router: Router;
   public buildingService: BuildingService;
+  public projectService: ProjectService;
 
   constructor() {
     this.init();
@@ -11,6 +19,7 @@ export class BuildingController {
 
   private init() {
     this.buildingService = new BuildingService();
+    this.projectService = new ProjectService();
     this.router = Router();
     this.routes();
   }
@@ -27,10 +36,22 @@ export class BuildingController {
   /**
    * Crete new Building
    */
-  public create(req: Request, res: Response) {
-    res.send('create');
-  }
+  public create = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      let buildingDto: BuildingDto = req.body;
+      // let projectDto: ProjectDto | undefined = await this.projectService.findById(buildingDto.project_id);
+      let projectDto = (await this.projectService.findById(buildingDto.project_id)) as Project;
+      if (!projectDto) {
+        next(Boom.badImplementation('Does not found the project related to the building'));
+      }
 
+      buildingDto = await this.buildingService.create(buildingDto, projectDto);
+
+      res.status(201).json(buildingDto);
+    } catch (error) {
+      next(Boom.badImplementation(error));
+    }
+  };
   /**
    * Update Building
    */
@@ -47,7 +68,7 @@ export class BuildingController {
 
   public routes() {
     this.router.get('/', this.buildings);
-    this.router.post('/', this.create);
+    this.router.post('/', validationHandler(BuildingSchema), this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);
   }
