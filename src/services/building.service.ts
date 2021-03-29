@@ -18,6 +18,13 @@ export class BuildingService {
     const buildings = await this.buildingRepository.find();
     return buildings;
   };
+  /**
+   * @param {number} id building id
+   */
+  public findById = async (idBuilding: number) => {
+    const building = await this.buildingRepository.findById(idBuilding);
+    return building;
+  };
 
   /**
    * Create a new Building

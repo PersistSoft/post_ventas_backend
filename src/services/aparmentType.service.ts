@@ -19,11 +19,20 @@ export class AparmentTypeService {
     return aparmentsTypes;
   };
 
+  /**
+   *
+   */
+  public findById = async (idType: number) => {
+    console.log('aparmentTypeService');
+    const aparmentsType = this.aparmentTypeRepository.findById(idType);
+    return aparmentsType;
+  };
+
   public create = async (apartmentTypeDto: ApartmentTypeDto) => {
     let newApartmentType = ApartmentTypeMapper.toEntity(apartmentTypeDto);
-    
+
     newApartmentType = await this.aparmentTypeRepository.save(newApartmentType);
 
     return ApartmentTypeMapper.toOutputDto(newApartmentType);
-  }
+  };
 }
