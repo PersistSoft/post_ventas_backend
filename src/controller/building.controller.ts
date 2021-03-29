@@ -39,7 +39,7 @@ export class BuildingController {
   public create = async (req: Request, res: Response, next: NextFunction) => {
     try {
       let buildingDto: BuildingDto = req.body;
-      // let projectDto: ProjectDto | undefined = await this.projectService.findById(buildingDto.project_id);
+
       let projectDto = (await this.projectService.findById(buildingDto.project_id)) as Project;
       if (!projectDto) {
         next(Boom.badImplementation('Does not found the project related to the building'));

@@ -19,10 +19,10 @@ export class ProjectService {
   };
   /**
    * Find one by projects
-   * @param {integer} id project id
+   * @param {number} id project id
    */
   public findById = async (idProject: number) => {
-    const project = await this.projectRepository.findOne({ id: idProject });
+    const project = await this.projectRepository.findById(idProject);
     return project;
   };
   /**
