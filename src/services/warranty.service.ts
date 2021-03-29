@@ -1,4 +1,5 @@
 import { getCustomRepository, getConnection } from 'typeorm';
+import { Warranty } from '../database/entities/warranty';
 import { WarrantyRepository } from '../repositories/warranty.repository';
 
 export class WarrantyService {
@@ -15,4 +16,9 @@ export class WarrantyService {
     const warranties = await this.warrantyRepository.find();
     return warranties;
   };
+
+  public create = async (warranty: Warranty) => {
+    const newWarranty = await this.warrantyRepository.create(warranty);
+    return newWarranty;
+  }
 }

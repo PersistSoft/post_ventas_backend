@@ -12,9 +12,9 @@ import {
 } from 'typeorm';
 
 import { Aparment } from './aparments';
-import { Client } from './client';
 import { WarrantyType } from './warrantyType';
 import { Status } from './status';
+import { ContactInfo } from './contractInfo';
 
 @Entity('warranties')
 export class Warranty {
@@ -33,9 +33,6 @@ export class Warranty {
   @Column({ name: 'client_sign' })
   clientSing: number;
 
-  @ManyToOne(() => Client, (client) => client.warranties)
-  client: Client;
-
   @ManyToOne(() => Aparment, (aparment) => aparment.warranties)
   aparment: Aparment;
 
@@ -51,9 +48,15 @@ export class Warranty {
       referencedColumnName: 'id',
     },
   })
-  aparments: WarrantyType[];
+  warrantyTypes: WarrantyType[];
 
   @OneToOne(() => Status, (status) => status.warranty)
   @JoinColumn()
   status: Status;
+
+  @Column()
+  private value: number;
+
+  @ManyToOne(() => ContactInfo)
+  contactInfo: ContactInfo;
 }

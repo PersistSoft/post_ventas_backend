@@ -28,6 +28,9 @@ export class WarrantyController {
    * Crete new Users
    */
   public create(req: Request, res: Response) {
+    const warranty = req.body;
+    console.log('warranty: ',warranty);
+    
     res.send('create');
   }
 
