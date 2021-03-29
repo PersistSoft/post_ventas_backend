@@ -46,13 +46,13 @@ export class AparmentsController {
   public create = async (req: Request, res: Response, next: NextFunction) => {
     try {
       let aparmentDto: AparmentDto = req.body;
-      console.log(aparmentDto);
+
       let building = (await this.buildingService.findById(aparmentDto.building_id)) as Building;
-      console.log('typeId', aparmentDto.type_id);
+
       let aparmentType = (await this.aparmentTypeService.findById(aparmentDto.type_id)) as AparmentType;
-      console.log(aparmentType);
+
       if (!building || !aparmentType) {
-        next(Boom.badImplementation('Does not Found building or Aparment'));
+        next(Boom.badImplementation('Does not Found building or AparmentType'));
       }
 
       aparmentDto = await this.aparmentService.create(aparmentDto, building, aparmentType);

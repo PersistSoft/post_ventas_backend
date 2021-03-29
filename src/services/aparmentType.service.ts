@@ -29,8 +29,9 @@ export class AparmentTypeService {
   };
 
   public create = async (apartmentTypeDto: ApartmentTypeDto) => {
+    console.log('hey');
     let newApartmentType = ApartmentTypeMapper.toEntity(apartmentTypeDto);
-
+    console.log('n', newApartmentType);
     newApartmentType = await this.aparmentTypeRepository.save(newApartmentType);
 
     return ApartmentTypeMapper.toOutputDto(newApartmentType);

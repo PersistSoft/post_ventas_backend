@@ -24,8 +24,16 @@ export class AparmentService {
   };
 
   /**
+   *@param {number}  idAparment id
+   */
+  public findById = async (idAparment: number) => {
+    const aparments = this.aparmentRepository.findById(idAparment);
+    return aparments;
+  };
+
+  /**
    * Create a new Aparment
-   * @param {VRDisplayEventInit}  building entity
+   * @param {Building}  building entity
    * @param {AparmentDto} AparmentDto building Dto
    * @param {AparmentType} ApartmentType  entity
    */

@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, Unique } from 'typeorm';
 import { Aparment } from './aparments';
 
 @Entity('storage_units')
+@Unique(['name'])
 export class StorageUnit {
   @PrimaryGeneratedColumn()
   id: number;

@@ -1,9 +1,18 @@
-import { Request, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
+import { validationHandler } from './../utils/middleware/schemaValidation';
+import Boom from '@hapi/boom';
+
+import { StorageUnitSchema } from './../utils/schema/storageUnit.schema';
+
 import { StorageUnitService } from '../services/storage_unit.service';
+import { AparmentService } from '../services/aparments.service';
+import { StorageUnitDto } from '../dto/storageUnit.dto';
+import { Aparment } from '../database/entities/aparments';
 
 export class StorageUnitController {
   public router: Router;
   private storageUnitService: StorageUnitService;
+  private aparmentService: AparmentService;
 
   constructor() {
     this.init();
@@ -11,6 +20,7 @@ export class StorageUnitController {
 
   private init() {
     this.storageUnitService = new StorageUnitService();
+    this.aparmentService = new AparmentService();
     this.router = Router();
     this.routes();
   }
@@ -25,11 +35,24 @@ export class StorageUnitController {
   };
 
   /**
-   * Crete new Parkings
+   * Crete new Storage
    */
-  public create(req: Request, res: Response) {
-    res.send('create');
-  }
+  public create = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      let storage_unit: StorageUnitDto = req.body;
+
+      let aparment = (await this.aparmentService.findById(storage_unit.aparment_id)) as Aparment;
+
+      if (!storage_unit || !aparment) {
+        next(Boom.badRequest('Doest not found aparmet'));
+      }
+
+      storage_unit = await this.storageUnitService.create(storage_unit, aparment);
+      res.status(201).json(storage_unit);
+    } catch (error) {
+      next(Boom.badImplementation(error));
+    }
+  };
 
   /**
    * Update Role
@@ -47,7 +70,7 @@ export class StorageUnitController {
 
   public routes() {
     this.router.get('/', this.parkings);
-    this.router.post('/', this.create);
+    this.router.post('/', validationHandler(StorageUnitSchema), this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);
   }
