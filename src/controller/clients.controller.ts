@@ -1,5 +1,10 @@
-import { Request, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
+import Boom from '@hapi/boom';
+import { validationHandler } from './../utils/middleware/schemaValidation';
+
+import { ClientDto } from '../dto/client.dto';
 import { ClientService } from '../services/client.service';
+import { clientSchema } from '../utils/schema/client.schema';
 
 export class ClientController {
   public router: Router;
@@ -16,7 +21,7 @@ export class ClientController {
   }
 
   /**
-   * Get all Buildings
+   * Get all Clients
    */
 
   public clients = async (req: Request, res: Response) => {
@@ -25,11 +30,20 @@ export class ClientController {
   };
 
   /**
-   * Crete new Building
+   * Crete new Client
    */
-  public create(req: Request, res: Response) {
-    res.send('create');
-  }
+  public create = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      let newClient: ClientDto = req.body;
+      // if (!newClient) {
+      //   next(Boom.badRequest('Does not found de client information'));
+      // }
+      newClient = await this.clientService.create(newClient);
+      res.status(201).json(newClient);
+    } catch (error) {
+      next(Boom.badImplementation(error));
+    }
+  };
 
   /**
    * Update Building
@@ -47,7 +61,7 @@ export class ClientController {
 
   public routes() {
     this.router.get('/', this.clients);
-    this.router.post('/', this.create);
+    this.router.post('/', validationHandler(clientSchema), this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);
   }
