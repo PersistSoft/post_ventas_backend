@@ -9,7 +9,7 @@ export class ApartmentMapper {
     const aparment = new Aparment();
 
     aparment.name = apartmentDto.name;
-    aparment.deliveryDate = new Date();
+    aparment.deliveryDate = apartmentDto.deliveryDate || new Date();
     aparment.building = building;
     aparment.type = type;
 

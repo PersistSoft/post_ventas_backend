@@ -1,9 +1,18 @@
-import { Request, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
+import { validationHandler } from './../utils/middleware/schemaValidation';
+import Boom from '@hapi/boom';
+
+import { ParkingSchema } from './../utils/schema/parking.schema';
+
 import { ParkingService } from '../services/parking.service';
+import { AparmentService } from '../services/aparments.service';
+import { ParkingDto } from '../dto/parking.dto';
+import { Aparment } from '../database/entities/aparments';
 
 export class ParkingController {
   public router: Router;
   private parkingService: ParkingService;
+  private aparmentService: AparmentService;
 
   constructor() {
     this.init();
@@ -11,6 +20,7 @@ export class ParkingController {
 
   private init() {
     this.parkingService = new ParkingService();
+    this.aparmentService = new AparmentService();
     this.router = Router();
     this.routes();
   }
@@ -27,9 +37,22 @@ export class ParkingController {
   /**
    * Crete new Parkings
    */
-  public create(req: Request, res: Response) {
-    res.send('create');
-  }
+  public create = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      let parking: ParkingDto = req.body;
+      console.log(parking);
+      let aparment = (await this.aparmentService.findById(parking.aparment_id)) as Aparment;
+
+      if (!parking || !aparment) {
+        next(Boom.badRequest('Doest not found aparmet'));
+      }
+
+      parking = await this.parkingService.create(parking, aparment);
+      res.status(201).json(parking);
+    } catch (error) {
+      next(Boom.badImplementation(error));
+    }
+  };
 
   /**
    * Update Role
@@ -47,7 +70,7 @@ export class ParkingController {
 
   public routes() {
     this.router.get('/', this.parkings);
-    this.router.post('/', this.create);
+    this.router.post('/', validationHandler(ParkingSchema), this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);
   }

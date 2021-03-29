@@ -2,4 +2,8 @@ import { EntityRepository, Repository } from 'typeorm';
 import { Aparment } from './../database/entities/aparments';
 
 @EntityRepository(Aparment)
-export class AparmentRepository extends Repository<Aparment> {}
+export class AparmentRepository extends Repository<Aparment> {
+  findById(idAparment: number) {
+    return this.findOne({ id: idAparment });
+  }
+}
