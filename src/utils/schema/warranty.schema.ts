@@ -1,17 +1,17 @@
 import joi from '@hapi/joi';
 
-const username = joi.string();
-const name = joi.string();
-const lastName = joi.string();
-const email = joi.string().email();
-const password = joi.string();
-const rolId = joi.number();
+const clientSing = joi.number();
+const apartmentId = joi.number();
+const warrantyTypes = joi.array().items(joi.number());
+const statusId = joi.number();
+const value = joi.number();
+const contactInfo = joi.number();
 
-export const SignUpSchema = {
-  username: username.required(),
-  name: name.required(),
-  lastName: lastName.required(),
-  email: email.required(),
-  password: password.required(),
-  rolId: rolId.required()
+export const WarrantySchema = {
+  clientSing: clientSing,
+  apartmentId: apartmentId.required(),
+  warrantyTypes: warrantyTypes.required(),
+  statusId: statusId.required(),
+  value: value.required(),
+  contactInfo: contactInfo.required()
 }

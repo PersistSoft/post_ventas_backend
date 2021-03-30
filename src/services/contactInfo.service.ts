@@ -29,4 +29,12 @@ export class ContactInfoService {
     
     return ContactInfoMapper.toOutputDto(newContactInfo);
   }
+
+  /**
+   * Find by id
+   */
+  public findById = async (id: number) => {
+    const contact = await this.contactInfoRepository.findById(id);
+    return contact;
+  };
 }

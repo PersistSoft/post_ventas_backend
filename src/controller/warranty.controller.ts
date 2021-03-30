@@ -1,5 +1,8 @@
 import { Request, Response, Router } from 'express';
 import { WarrantyService } from './../services/warranty.service';
+import { WarrantySchema } from './../utils/schema/warranty.schema';
+import { validationHandler } from './../utils/middleware/schemaValidation';
+import { WarrantyDto } from '../dto/warranty.dto';
 
 export class WarrantyController {
   private warrantyService: WarrantyService;
@@ -28,8 +31,9 @@ export class WarrantyController {
    * Crete new Users
    */
   public create(req: Request, res: Response) {
-    const warranty = req.body;
-    console.log('warranty: ',warranty);
+    let warranty = req.body as WarrantyDto;
+    warranty = this.warrantyService.create(warranty);
+    
     
     res.send('create');
   }
@@ -50,7 +54,7 @@ export class WarrantyController {
 
   public routes() {
     this.router.get('/', this.warranties);
-    this.router.post('/', this.create);
+    this.router.post('/', validationHandler(WarrantySchema), this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);
   }

@@ -10,10 +10,15 @@ export class AparmentService {
   }
 
   /**
-   *
+   * Find all
    */
   public findAll = async () => {
-    const aparments = this.aparmentRepository.find();
+    const aparments = await this.aparmentRepository.find();
     return aparments;
   };
+
+  public findById = async(id: number) => {
+    const apartment = await this.aparmentRepository.findById(id);
+    return apartment;
+  }
 }
