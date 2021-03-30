@@ -1,13 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, Unique } from 'typeorm';
 import { Aparment } from './aparments';
 
 @Entity('parking')
+@Unique(['name'])
 export class Parking {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  parking: string;
+  name: string;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;

@@ -30,9 +30,9 @@ export class Client {
   email: string;
 
   @Column({ type: 'varchar', nullable: false })
-  phone: string;
+  phone: number;
 
-  @Column({ nullable: false, default: false })
+  @Column({ nullable: false, default: true })
   dataController: boolean;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
