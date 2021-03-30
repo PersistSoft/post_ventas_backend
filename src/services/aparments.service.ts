@@ -23,18 +23,12 @@ export class AparmentService {
     return aparments;
   };
 
-<<<<<<< HEAD
-  public findById = async(id: number) => {
-    const apartment = await this.aparmentRepository.findById(id);
-    return apartment;
-  }
-=======
   /**
    *@param {number}  idAparment id
    */
   public findById = async (idAparment: number) => {
-    const aparments = this.aparmentRepository.findById(idAparment);
-    return aparments;
+    const aparment = this.aparmentRepository.findById(idAparment);
+    return aparment;
   };
 
   /**
@@ -51,5 +45,4 @@ export class AparmentService {
 
     return ApartmentMapper.toOutputDto(newAparment);
   };
->>>>>>> main
 }
