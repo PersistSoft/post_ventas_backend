@@ -30,7 +30,7 @@ export class Warranty {
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
 
-  @Column({ name: 'client_sign' })
+  @Column({ name: 'client_sign', nullable: true })
   clientSing: number;
 
   @ManyToOne(() => Aparment, (aparment) => aparment.warranties)
@@ -55,7 +55,7 @@ export class Warranty {
   status: Status;
 
   @Column()
-  private value: number;
+  value: number;
 
   @ManyToOne(() => ContactInfo)
   contactInfo: ContactInfo;

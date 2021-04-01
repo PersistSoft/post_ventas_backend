@@ -11,18 +11,27 @@ export class WarrantyTypeService {
   }
 
   /**
-   *
+   * Find all
    */
   public findAll = async () => {
     const warrantiesTypes = await this.warrantyTypeRepository.find();
     return warrantiesTypes;
   };
 
+  /**
+   * Create
+   * @param warrantyType 
+   */
   public create = async (warrantyType: WarrantyTypeDto) => {
     let newWarrantyType = WarrantyTypeMapper.toEntity(warrantyType);
     
     newWarrantyType = await this.warrantyTypeRepository.save(newWarrantyType);
 
     return WarrantyTypeMapper.toOutputDto(newWarrantyType);
+  }
+
+  public findByIds = async (ids: number[]) => {
+    const warrantyTypes = await this.warrantyTypeRepository.findByIds(ids);
+    return WarrantyTypeMapper.toListOutputDto(warrantyTypes);
   }
 }

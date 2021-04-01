@@ -27,8 +27,13 @@ export class AparmentService {
    *@param {number}  idAparment id
    */
   public findById = async (idAparment: number) => {
-    const aparment = this.aparmentRepository.findById(idAparment);
-    return aparment;
+    let aparment = await this.aparmentRepository.findById(idAparment) as Aparment;
+    
+    if(!aparment){
+      throw `Apartment with id: ${idAparment} doesn't exist`;
+    }
+    
+    return ApartmentMapper.toOutputDto(aparment);
   };
 
   /**

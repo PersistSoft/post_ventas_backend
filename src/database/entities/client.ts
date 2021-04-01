@@ -54,7 +54,4 @@ export class Client {
     },
   })
   aparments: Aparment[];
-
-  @OneToMany(() => Warranty, (warranty) => warranty.client)
-  warranties: Warranty[];
 }

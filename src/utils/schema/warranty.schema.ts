@@ -6,12 +6,14 @@ const warrantyTypes = joi.array().items(joi.number());
 const statusId = joi.number();
 const value = joi.number();
 const contactInfo = joi.number();
+const closeAt = joi.date();
 
 export const WarrantySchema = {
   clientSing: clientSing,
   apartmentId: apartmentId.required(),
-  warrantyTypes: warrantyTypes.required(),
+  warrantyTypeIds: warrantyTypes.required(),
   statusId: statusId.required(),
   value: value.required(),
-  contactInfo: contactInfo.required()
+  contractInfoId: contactInfo.required(),
+  closeAt: closeAt.required()
 }

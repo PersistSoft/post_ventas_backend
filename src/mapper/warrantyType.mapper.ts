@@ -1,6 +1,4 @@
-import { Role } from "../database/entities/Role";
 import { WarrantyType } from "../database/entities/warrantyType";
-import { RoleDto } from "../dto/role.dto";
 import { WarrantyTypeDto } from "../dto/warrantyType.dto";
 
 
@@ -21,5 +19,21 @@ export class WarrantyTypeMapper {
     }
 
     return warrantyTypeDto;
+  }
+
+  public static toListOutputDto(warrantyTypes: WarrantyType[]): WarrantyTypeDto[] {
+    let warrantyTypesDto: WarrantyTypeDto[] = [];
+
+    warrantyTypes.forEach((warrantyType) => {
+      const warrantyTypeDto: WarrantyTypeDto = {
+        'id': warrantyType.id,
+        'name': warrantyType.name
+      }
+
+      warrantyTypesDto.push(warrantyTypeDto);
+
+    });
+
+    return warrantyTypesDto;
   }
 }

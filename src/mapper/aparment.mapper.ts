@@ -16,13 +16,23 @@ export class ApartmentMapper {
     return aparment;
   }
 
+
+  public static toSingleEntity(apartmentDto: AparmentDto): Aparment {
+    console.log('::::apartmentDto ',apartmentDto);
+    
+    const aparment = new Aparment();
+    apartmentDto.id = apartmentDto.id;
+    
+    return aparment;
+  }
+
   public static toOutputDto(apartment: Aparment): AparmentDto {
     const apartmentDto: AparmentDto = {
       id: apartment.id,
       name: apartment.name,
       deliveryDate: apartment.deliveryDate,
-      building_id: apartment.building.id,
-      type_id: apartment.type.id,
+      building_id: apartment?.building?.id,
+      type_id: apartment?.type?.id,
     };
 
     return apartmentDto;

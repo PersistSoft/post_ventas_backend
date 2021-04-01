@@ -1,5 +1,4 @@
 import { EntityRepository, Repository } from 'typeorm';
-import { Configuration } from '../config';
 import { ContactInfo } from '../database/entities/contractInfo';
 
 @EntityRepository(ContactInfo)

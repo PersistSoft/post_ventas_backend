@@ -41,14 +41,17 @@ export class StorageUnitController {
     try {
       let storage_unit: StorageUnitDto = req.body;
 
-      let aparment = (await this.aparmentService.findById(storage_unit.aparment_id)) as Aparment;
+      let aparment = (await this.aparmentService.findById(storage_unit.aparment_id));
 
       if (!storage_unit || !aparment) {
         next(Boom.badRequest('Doest not found aparmet'));
       }
+      
+      let apt = new Aparment();
+      apt.id = aparment.id;
 
-      storage_unit = await this.storageUnitService.create(storage_unit, aparment);
-      res.status(201).json(storage_unit);
+      storage_unit = await this.storageUnitService.create(storage_unit, apt);    
+      res.status(201).json(storage_unit);apt
     } catch (error) {
       next(Boom.badImplementation(error));
     }

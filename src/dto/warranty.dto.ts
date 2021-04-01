@@ -4,5 +4,6 @@ export interface WarrantyDto {
   warrantyTypeIds: number[];
   statusId: number;
   value: number;
-  contactInfoId: number;
+  contractInfoId: number;
+  closeAt: Date;
 }
