@@ -21,6 +21,7 @@ import { StatusController } from './controller/status.controller';
 import { AuthController } from './controller/auth.controller';
 import { Configuration } from './config';
 import { createConnection } from 'typeorm';
+import { ContactInfoController } from './controller/contactInfo.controller';
 import dotenv from 'dotenv';
 
 import compression from 'compression';
@@ -43,7 +44,7 @@ class Server {
   private statusController: StatusController;
   private aparmentTypeController: AparmentTypeController;
   private authController: AuthController;
-
+  private contactInfoController: ContactInfoController;
   private apiPrefix = 'api';
 
   private app: express.Application;
@@ -87,6 +88,7 @@ class Server {
     this.warrantyTypeController = new WarrantyTypeController();
     this.statusController = new StatusController();
     this.authController = new AuthController();
+    this.contactInfoController = new ContactInfoController();
 
     this.app.use(this.indexController.router);
     this.app.use(`/${this.apiPrefix}/roles`, this.roleController.router);
@@ -98,9 +100,10 @@ class Server {
     this.app.use(`/${this.apiPrefix}/parking`, this.parkingController.router);
     this.app.use(`/${this.apiPrefix}/storage`, this.storageUnitController.router);
     this.app.use(`/${this.apiPrefix}/client`, this.clientController.router);
-    this.app.use(`/${this.apiPrefix}/warranty`, this.warrantyController.router);
+    this.app.use(`/${this.apiPrefix}/warranties`, this.warrantyController.router);
     this.app.use(`/${this.apiPrefix}/warrantytype`, this.warrantyTypeController.router);
     this.app.use(`/${this.apiPrefix}/status`, this.statusController.router);
+    this.app.use(`/${this.apiPrefix}/contacts`, this.contactInfoController.router);
 
     this.app.use(`/${this.apiPrefix}/auth`, this.authController.router);
     this.app.use(`/swagger`, swaggerUi.serve, swaggerUi.setup(swaggerDocument));

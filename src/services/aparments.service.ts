@@ -1,4 +1,4 @@
-import { getCustomRepository, getConnection } from 'typeorm';
+import { getConnection } from 'typeorm';
 
 import { AparmentDto } from '../dto/aparment.dto';
 import { Aparment } from '../database/entities/aparments';
@@ -16,10 +16,10 @@ export class AparmentService {
   }
 
   /**
-   *
+   * Find all
    */
   public findAll = async () => {
-    const aparments = this.aparmentRepository.find();
+    const aparments = await this.aparmentRepository.find();
     return aparments;
   };
 
@@ -27,8 +27,13 @@ export class AparmentService {
    *@param {number}  idAparment id
    */
   public findById = async (idAparment: number) => {
-    const aparments = this.aparmentRepository.findById(idAparment);
-    return aparments;
+    let aparment = await this.aparmentRepository.findById(idAparment) as Aparment;
+    
+    if(!aparment){
+      throw `Apartment with id: ${idAparment} doesn't exist`;
+    }
+    
+    return ApartmentMapper.toOutputDto(aparment);
   };
 
   /**

@@ -5,9 +5,6 @@ import { Role } from "../database/entities/Role";
 export class RoleRepository extends Repository<Role> {
   
   findById(id: number) {
-    const role = new Role();
-    role.id = id;
-
-    return this.findOne(role);
+    return this.findOne({ id });
   }
 }

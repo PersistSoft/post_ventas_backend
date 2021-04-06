@@ -1,20 +1,20 @@
 import Boom from '@hapi/boom';
 import { NextFunction, Request, Response, Router } from 'express';
-import { StatusDto } from '../dto/status.dto';
-import { StatusService } from '../services/status.service';
+import { ContactInfoDto } from '../dto/contactInfo.dto';
+import { ContactInfoService } from '../services/contactInfo.service';
 import { validationHandler} from './../utils/middleware/schemaValidation';
-import { StatusSchema } from './../utils/schema/types.schema';
+import { ContactInfoSchema } from './../utils/schema/contactInfo.schema';
 
-export class StatusController {
+export class ContactInfoController {
   public router: Router;
-  private statusService: StatusService;
+  private contactInfoService: ContactInfoService;
 
   constructor() {
     this.init();
   }
 
   private init() {
-    this.statusService = new StatusService();
+    this.contactInfoService = new ContactInfoService();
     this.router = Router();
     this.routes();
   }
@@ -23,9 +23,9 @@ export class StatusController {
    * Get all Status
    */
 
-  public status = async (req: Request, res: Response) => {
-    let status = await this.statusService.findAll();
-    res.status(200).json(status);
+  public index = async (req: Request, res: Response) => {
+    let contacts = await this.contactInfoService.findAll();
+    res.status(200).json(contacts);
   };
 
   /**
@@ -34,9 +34,9 @@ export class StatusController {
   public create = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
-      let status = req.body as StatusDto;
-      status = await this.statusService.create(status);
-      res.status(201).json(status);
+      let contact = req.body as ContactInfoDto;
+      contact = await this.contactInfoService.create(contact);
+      res.status(201).json(contact);
 
     } catch (error) {
       next(Boom.badImplementation(error))
@@ -58,8 +58,8 @@ export class StatusController {
   }
 
   public routes() {
-    this.router.get('/',  this.status);
-    this.router.post('/', validationHandler(StatusSchema), this.create);
+    this.router.get('/', this.index);
+    this.router.post('/', validationHandler(ContactInfoSchema), this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);
   }

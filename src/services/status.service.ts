@@ -11,7 +11,7 @@ export class StatusService {
   }
 
   /**
-   *
+   * Find all
    */
   public findAll = async () => {
     const status = await this.statusRepository.find();
@@ -25,4 +25,12 @@ export class StatusService {
 
     return StatusMapper.toOutputDto(newStatus);
   }
+
+  /**
+   * Find by id
+   */
+  public findById = async (id: number) => {
+    const contact = await this.statusRepository.findById(id);
+    return contact;
+  };
 }

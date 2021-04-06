@@ -41,13 +41,16 @@ export class ParkingController {
     try {
       let parking: ParkingDto = req.body;
       console.log(parking);
-      let aparment = (await this.aparmentService.findById(parking.aparment_id)) as Aparment;
+      let aparment = (await this.aparmentService.findById(parking.aparment_id));
 
       if (!parking || !aparment) {
         next(Boom.badRequest('Doest not found aparmet'));
       }
 
-      parking = await this.parkingService.create(parking, aparment);
+      let apt = new Aparment();
+      apt.id = aparment.id;
+
+      parking = await this.parkingService.create(parking, apt);
       res.status(201).json(parking);
     } catch (error) {
       next(Boom.badImplementation(error));
