@@ -76,6 +76,6 @@ export class AuthController {
 
   public routes() {
     this.router.post('/login', this.login);
-    this.router.post('/signUp', validationHandler(SignUpSchema), this.signUp);
+    this.router.post('/signUp', this.signUp);
   }
 }

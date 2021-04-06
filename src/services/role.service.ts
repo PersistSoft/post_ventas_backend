@@ -2,7 +2,7 @@ import { getCustomRepository, getConnection } from "typeorm";
 import { RoleDto } from "../dto/role.dto";
 import { RoleMapper } from "../mapper/role.mapper";
 import { RoleRepository } from "../repositories/role.repository";
-
+import { classToPlain } from 'class-transformer';
 export class RoleService {
   private roleRepository: RoleRepository;
 
@@ -14,13 +14,18 @@ export class RoleService {
    * Find all roles
    */
   public findAll = async () => {
-    const blueprints = await this.roleRepository.find();
-    return blueprints;
+    const roles = await this.roleRepository.find();
+    return classToPlain(roles);
   }
 
   public findById = async (id: number) => {
     const role = await this.roleRepository.findById(id);
-    return role;
+    
+    if(!role){
+      throw `Role with id: ${id} doesn't exist`
+    }
+
+    return classToPlain(role);
   }
 
   public create = async (role: RoleDto) => {

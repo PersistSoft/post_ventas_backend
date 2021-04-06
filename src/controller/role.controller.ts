@@ -59,7 +59,7 @@ export class RoleController {
   } 
 
   public routes(){
-    this.router.get('/', validationHandler(RoleSchema), this.index);
+    this.router.get('/', this.index);
     this.router.post('/', this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);

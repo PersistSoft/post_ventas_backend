@@ -15,6 +15,7 @@ import { Warranty } from './warranty';
 import { Parking } from './parkings';
 import { StorageUnit } from './storage_unit';
 import { AparmentType } from './aparmentType';
+import { Exclude } from 'class-transformer';
 
 @Entity('aparments')
 export class Aparment {
@@ -27,9 +28,11 @@ export class Aparment {
   @Column()
   deliveryDate: Date;
 
+  @Exclude()
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
 
+  @Exclude()
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
 

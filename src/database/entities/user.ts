@@ -13,9 +13,10 @@ import {
 
 import { Role } from './Role';
 import { Project } from './project';
+import { Exclude } from 'class-transformer';
 
 @Entity('users')
-@Unique(['username'])
+@Unique(['username','email'])
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -27,17 +28,20 @@ export class User {
   name: string;
 
   @Column()
-  lastname: string;
+  lastName: string;
 
   @Column({ type: 'varchar', nullable: false, length: 50 })
   email: string;
 
+  @Exclude()
   @Column({ type: 'varchar', nullable: false })
   password: string;
 
+  @Exclude()
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
 
+  @Exclude()
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
 

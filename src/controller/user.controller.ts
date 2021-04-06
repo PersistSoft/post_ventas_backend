@@ -49,7 +49,8 @@ export class UserController {
   }
 
   public routes() {
-    this.router.get('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.users);
+    //this.router.get('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.users);
+    this.router.get('/', this.users);
     this.router.post('/', this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);
