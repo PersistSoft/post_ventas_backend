@@ -20,8 +20,10 @@ export class UserService {
    */
   public findAll = async () => {
     try {
+
       const users = await this.userRepository.find();
       return classToPlain(users);  
+      
     } catch (error) {
       throw error;
     }
@@ -32,8 +34,18 @@ export class UserService {
    * @param username 
    */
   public findByUsername = async (username: string) => {
-    const user = await this.userRepository.findByUsername(username);
-    return user;
+    try {
+
+      const user = await this.userRepository.findByUsername(username);
+
+      if(!user){
+        throw `User with username: ${username} doesn't exist.`;
+      }
+      return user;      
+
+    } catch (error) {
+      throw error;
+    }
   };
 
   /**

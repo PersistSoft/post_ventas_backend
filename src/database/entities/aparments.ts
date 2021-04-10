@@ -48,7 +48,7 @@ export class Aparment {
   @OneToMany(() => StorageUnit, (storageUnit) => storageUnit.aparment)
   storageUnits: StorageUnit[];
 
-  @OneToOne(() => AparmentType, (aparmentType) => aparmentType.type)
+  @ManyToOne(() => AparmentType)
   @JoinColumn()
   type: AparmentType;
 }

@@ -38,7 +38,7 @@ export class Warranty {
 
   @ManyToOne(() => Aparment, (aparment) => aparment.warranties)
   aparment: Aparment;
-
+  
   @ManyToMany((type) => WarrantyType, { eager: true })
   @JoinTable({
     name: 'warranty_warranty_type',
@@ -53,7 +53,7 @@ export class Warranty {
   })
   warrantyTypes: WarrantyType[];
 
-  @OneToOne(() => Status, (status) => status.warranty)
+  @ManyToOne(() => Status)
   @JoinColumn()
   status: Status;
 

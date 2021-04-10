@@ -12,7 +12,6 @@ import { Aparment } from '../database/entities/aparments';
 export class ParkingController {
   public router: Router;
   private parkingService: ParkingService;
-  private aparmentService: AparmentService;
 
   constructor() {
     this.init();
@@ -20,7 +19,6 @@ export class ParkingController {
 
   private init() {
     this.parkingService = new ParkingService();
-    this.aparmentService = new AparmentService();
     this.router = Router();
     this.routes();
   }
@@ -39,19 +37,11 @@ export class ParkingController {
    */
   public create = async (req: Request, res: Response, next: NextFunction) => {
     try {
+
       let parking: ParkingDto = req.body;
-      console.log(parking);
-      let aparment = (await this.aparmentService.findById(parking.aparment_id));
+      const newParking = await this.parkingService.create(parking);
+      res.status(201).json(newParking);
 
-      if (!parking || !aparment) {
-        next(Boom.badRequest('Doest not found aparmet'));
-      }
-
-      let apt = new Aparment();
-      apt.id = aparment.id;
-
-      parking = await this.parkingService.create(parking, apt);
-      res.status(201).json(parking);
     } catch (error) {
       next(Boom.badImplementation(error));
     }

@@ -18,7 +18,4 @@ export class AparmentType {
   @Exclude()
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
-
-  @OneToOne(() => Aparment, (aparment) => aparment.type)
-  aparment: Aparment;
 }

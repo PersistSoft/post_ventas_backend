@@ -25,8 +25,15 @@ export class ProjectController {
    */
 
   public projects = async (req: Request, res: Response) => {
-    let projects = await this.projectService.findAll();
-    res.send(projects).json;
+    try {
+
+      let projects = await this.projectService.findAll();
+      res.send(projects).json;  
+
+    } catch (error) {
+      res.status(500).json(error);
+    }
+    
   };
 
   /**
@@ -34,13 +41,13 @@ export class ProjectController {
    */
   public create = async (req: Request, res: Response, next: NextFunction) => {
     try {
+      
       const project = req.body as ProjectDto;
-
       const projectDto = await this.projectService.create(project);
-
       res.status(201).send(projectDto);
+
     } catch (error) {
-      next(Boom.badImplementation(error));
+      res.status(500).json(error);
     }
   };
 

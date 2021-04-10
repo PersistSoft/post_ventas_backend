@@ -24,8 +24,15 @@ export class StatusController {
    */
 
   public status = async (req: Request, res: Response) => {
-    let status = await this.statusService.findAll();
-    res.status(200).json(status);
+    try {
+
+      let status = await this.statusService.findAll();
+      res.status(200).json(status);  
+
+    } catch (error) {
+      res.status(500).json(error);
+    }
+    
   };
 
   /**
@@ -35,11 +42,11 @@ export class StatusController {
     try {
 
       let status = req.body as StatusDto;
-      status = await this.statusService.create(status);
-      res.status(201).json(status);
+      let newStatus = await this.statusService.create(status);
+      res.status(201).json(newStatus);
 
     } catch (error) {
-      next(Boom.badImplementation(error))
+      res.status(500).json(error);
     }
   }
 

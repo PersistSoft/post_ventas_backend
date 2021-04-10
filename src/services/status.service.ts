@@ -1,3 +1,4 @@
+import { classToPlain } from 'class-transformer';
 import { getCustomRepository, getConnection } from 'typeorm';
 import { StatusDto } from '../dto/status.dto';
 import { StatusMapper } from '../mapper/status.mapper';
@@ -14,23 +15,43 @@ export class StatusService {
    * Find all
    */
   public findAll = async () => {
-    const status = await this.statusRepository.find();
-    return status;
+    try {
+      
+      const status = await this.statusRepository.find();
+      return classToPlain(status);  
+
+    } catch (error) {
+      throw error;
+    }
+    
   };
 
   public create = async (status: StatusDto) => {
-    let newStatus = StatusMapper.toEntity(status);
-    
-    newStatus = await this.statusRepository.save(newStatus);
+    try {
 
-    return StatusMapper.toOutputDto(newStatus);
+      let newStatus = await this.statusRepository.save(status);
+      return classToPlain(newStatus);  
+
+    } catch (error) {
+      throw error;
+    }
   }
 
   /**
    * Find by id
    */
   public findById = async (id: number) => {
-    const contact = await this.statusRepository.findById(id);
-    return contact;
+    try {
+
+      const contact = await this.statusRepository.findById(id);
+
+      if(!contact){
+        throw `Contact info with id: ${id} doesn't exist.`
+      }
+      return contact;      
+
+    } catch (error) {
+      throw error;
+    }
   };
 }

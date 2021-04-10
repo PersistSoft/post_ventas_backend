@@ -1,3 +1,4 @@
+import { classToPlain } from 'class-transformer';
 import { getCustomRepository, getConnection } from 'typeorm';
 import { ClientDto } from '../dto/client.dto';
 import { ClientMapper } from '../mapper/client.mapper';
@@ -14,15 +15,32 @@ export class ClientService {
    *
    */
   public findAll = async () => {
-    const clients = await this.clientRepository.find();
-    return clients;
+    try {
+
+      const clients = await this.clientRepository.find();
+      return classToPlain(clients);  
+
+    } catch (error) {
+      throw error;
+    }
   };
   /**
    *
    */
   public findById = async (idClient: number) => {
-    const client = await this.clientRepository.findById(idClient);
-    return client;
+    try {
+
+      const client = await this.clientRepository.findById(idClient);
+
+      if(!client){
+        throw `Client with id: ${idClient} doesn't exist.`;  
+      }
+
+      return classToPlain(client);  
+
+    } catch (error) {
+      throw error;
+    }
   };
 
   /**
@@ -30,10 +48,13 @@ export class ClientService {
    *
    */
   public create = async (clientDto: ClientDto) => {
-    let newClient = ClientMapper.toEntity(clientDto);
+    try {
 
-    newClient = await this.clientRepository.save(newClient);
+      const newClient = await this.clientRepository.save(clientDto);
+      return classToPlain(newClient);
 
-    return ClientMapper.toOutputDto(newClient);
+    } catch (error) {
+      throw error;
+    }
   };
 }

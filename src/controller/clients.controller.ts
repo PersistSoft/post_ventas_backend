@@ -23,10 +23,15 @@ export class ClientController {
   /**
    * Get all Clients
    */
-
   public clients = async (req: Request, res: Response) => {
-    let clients = await this.clientService.findAll();
-    res.send(clients).json;
+    try {
+
+      let clients = await this.clientService.findAll();
+      res.send(clients).json;  
+
+    } catch (error) {
+      res.status(500).json(error);
+    }
   };
 
   /**
@@ -34,14 +39,13 @@ export class ClientController {
    */
   public create = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      let newClient: ClientDto = req.body;
-      // if (!newClient) {
-      //   next(Boom.badRequest('Does not found de client information'));
-      // }
-      newClient = await this.clientService.create(newClient);
+
+      let client: ClientDto = req.body;
+      let newClient = await this.clientService.create(client);
       res.status(201).json(newClient);
+      
     } catch (error) {
-      next(Boom.badImplementation(error));
+      res.status(500).json(error);
     }
   };
 
@@ -61,7 +65,7 @@ export class ClientController {
 
   public routes() {
     this.router.get('/', this.clients);
-    this.router.post('/', validationHandler(clientSchema), this.create);
+    this.router.post('/', this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);
   }

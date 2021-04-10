@@ -23,9 +23,15 @@ export class AparmentTypeController {
    * Get all aparmentsType
    */
 
-  public aparmentsType = async (req: Request, res: Response) => {
-    let aparmentsType = await this.aparmentTypeService.findAll();
-    res.status(200).json(aparmentsType);
+  public aparmentsType = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      
+      let aparmentsType = await this.aparmentTypeService.findAll();
+      res.status(200).json(aparmentsType);  
+
+    } catch (error) {
+      res.status(500).json(error);
+    }
   };
 
   /**
@@ -36,11 +42,11 @@ export class AparmentTypeController {
     try {
 
       let apartmentTypeDto = req.body as ApartmentTypeDto;
-      apartmentTypeDto = await this.aparmentTypeService.create(apartmentTypeDto);
-      res.status(201).json(apartmentTypeDto);      
+      const apartmentType = await this.aparmentTypeService.create(apartmentTypeDto);
+      res.status(201).json(apartmentType);      
       
     } catch (error) {
-      next(Boom.badImplementation(error));
+      res.status(500).json(error);
     }
   }
 

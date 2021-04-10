@@ -24,8 +24,14 @@ export class ContactInfoController {
    */
 
   public index = async (req: Request, res: Response) => {
-    let contacts = await this.contactInfoService.findAll();
-    res.status(200).json(contacts);
+    try {
+
+      let contacts = await this.contactInfoService.findAll();
+      res.status(200).json(contacts);  
+
+    } catch (error) {
+      res.status(500).json(error);
+    }
   };
 
   /**
@@ -34,12 +40,12 @@ export class ContactInfoController {
   public create = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
-      let contact = req.body as ContactInfoDto;
-      contact = await this.contactInfoService.create(contact);
-      res.status(201).json(contact);
+      const contact = req.body as ContactInfoDto;
+      const newContact = await this.contactInfoService.create(contact);
+      res.status(201).json(newContact);
 
     } catch (error) {
-      next(Boom.badImplementation(error))
+      res.status(500).json(error);
     }
   }
 

@@ -18,7 +18,4 @@ export class Status {
   @Exclude()
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
-
-  @OneToOne(() => Warranty, (warranty) => warranty.status)
-  warranty: Warranty;
 }

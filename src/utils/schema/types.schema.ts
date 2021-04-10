@@ -3,7 +3,7 @@ import joi from '@hapi/joi';
 const name = joi.string();
 
 export const ApartmentTypeSchema = {
-  name: name.required()
+  type: name.required()
 }
 
 export const RoleSchema = {

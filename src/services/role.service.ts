@@ -19,8 +19,9 @@ export class RoleService {
   }
 
   public findById = async (id: number) => {
-    const role = await this.roleRepository.findById(id);
     
+    const role = await this.roleRepository.findById(id);
+  
     if(!role){
       throw `Role with id: ${id} doesn't exist`
     }
@@ -29,10 +30,13 @@ export class RoleService {
   }
 
   public create = async (role: RoleDto) => {
-    let newRole = RoleMapper.toEntity(role);
-    
-    newRole = await this.roleRepository.save(newRole);
+    try {
 
-    return RoleMapper.toOutputDto(newRole);
+      const newRole = await this.roleRepository.save(role);
+      return classToPlain(newRole); 
+
+    } catch (error) {
+      throw error;
+    }
   }
 }

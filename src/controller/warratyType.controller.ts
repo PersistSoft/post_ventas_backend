@@ -24,8 +24,16 @@ export class WarrantyTypeController {
    */
 
   public warrantiesTypes = async (req: Request, res: Response) => {
-    let warrantiesTypes = await this.warrantyTypeService.findAll();
-    res.status(200).json(warrantiesTypes);
+
+    try {
+
+      let warrantiesTypes = await this.warrantyTypeService.findAll();
+      res.status(200).json(warrantiesTypes);  
+
+    } catch (error) {
+      res.status(500).json(error);
+    }
+    
   };
 
   /**
@@ -35,11 +43,11 @@ export class WarrantyTypeController {
     try {
       
       let warrantyType = req.body as WarrantyTypeDto;
-      warrantyType = await this.warrantyTypeService.create(warrantyType);
-      res.status(201).json(warrantyType);
+      let newWarrantyType = await this.warrantyTypeService.create(warrantyType);
+      res.status(201).json(newWarrantyType);
 
     } catch (error) {
-      next(Boom.badImplementation(error)); 
+      res.status(500).json(error);
     }
   }
 
@@ -58,8 +66,8 @@ export class WarrantyTypeController {
   }
 
   public routes() {
-    this.router.get('/', validationHandler(WarrantyTypeSchema), this.warrantiesTypes);
-    this.router.post('/', this.create);
+    this.router.get('/', this.warrantiesTypes);
+    this.router.post('/', validationHandler(WarrantyTypeSchema), this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);
   }
