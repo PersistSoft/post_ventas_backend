@@ -35,9 +35,16 @@ export class AparmentsController {
    * Get all Aparments
    */
 
-  public aparments = async (req: Request, res: Response) => {
-    let aparments = await this.aparmentService.findAll();
-    res.send(aparments).json;
+  public aparments = async (req: Request, res: Response, next: NextFunction) => {
+
+    try {
+      
+      let aparments = await this.aparmentService.findAll();
+      res.status(200).json(aparments);  
+
+    } catch (error) {
+      res.status(500).json(error);
+    }
   };
 
   /**
@@ -47,18 +54,10 @@ export class AparmentsController {
     try {
       let aparmentDto: AparmentDto = req.body;
 
-      let building = (await this.buildingService.findById(aparmentDto.building_id)) as Building;
-
-      let aparmentType = (await this.aparmentTypeService.findById(aparmentDto.type_id)) as AparmentType;
-
-      if (!building || !aparmentType) {
-        next(Boom.badImplementation('Does not Found building or AparmentType'));
-      }
-
-      aparmentDto = await this.aparmentService.create(aparmentDto, building, aparmentType);
+      const newAparmentDto = await this.aparmentService.create(aparmentDto);
       res.status(201).json(aparmentDto);
     } catch (error) {
-      console.log(next(Boom.badImplementation(error)));
+      res.status(500).json(error);
     }
   };
 

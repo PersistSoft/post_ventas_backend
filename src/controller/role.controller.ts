@@ -25,8 +25,14 @@ export class RoleController {
 
   public index = async (req: Request, res: Response) => {
     
-    let roles = await this.roleService.findAll();
-    res.status(200).json(roles);
+    try {
+
+      let roles = await this.roleService.findAll();
+      res.status(200).json(roles);  
+
+    } catch (error) {
+      res.status(500).json(error);
+    }
   } 
 
   /**
@@ -36,11 +42,11 @@ export class RoleController {
     try {
       
       const role = req.body as RoleDto;
-      const roleDto = await this.roleService.create(role);
-      res.status(201).json(roleDto);
+      const newRole = await this.roleService.create(role);
+      res.status(201).json(newRole);
 
     } catch (error) {
-      next(Boom.badImplementation(error));
+      res.status(500).json(error);
     }
   }
 
@@ -59,7 +65,7 @@ export class RoleController {
   } 
 
   public routes(){
-    this.router.get('/', validationHandler(RoleSchema), this.index);
+    this.router.get('/', this.index);
     this.router.post('/', this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);

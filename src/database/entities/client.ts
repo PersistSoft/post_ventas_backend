@@ -14,6 +14,7 @@ import { Role } from './Role';
 import { Project } from './project';
 import { Aparment } from './aparments';
 import { Warranty } from './warranty';
+import { Exclude } from 'class-transformer';
 
 @Entity('clients')
 export class Client {
@@ -35,9 +36,11 @@ export class Client {
   @Column({ nullable: false, default: true })
   dataController: boolean;
 
+  @Exclude()
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
-
+  
+  @Exclude()
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
 

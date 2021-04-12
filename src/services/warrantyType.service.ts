@@ -1,6 +1,6 @@
+import { classToPlain } from 'class-transformer';
 import { getConnection } from 'typeorm';
 import { WarrantyTypeDto } from '../dto/warrantyType.dto';
-import { WarrantyTypeMapper } from '../mapper/warrantyType.mapper';
 import { WarrantyTypeRepository } from './../repositories/warrantyType.repository';
 
 export class WarrantyTypeService {
@@ -14,8 +14,16 @@ export class WarrantyTypeService {
    * Find all
    */
   public findAll = async () => {
-    const warrantiesTypes = await this.warrantyTypeRepository.find();
-    return warrantiesTypes;
+    try {
+
+      const warrantiesTypes = await this.warrantyTypeRepository.find();
+      return classToPlain(warrantiesTypes);  
+
+    } catch (error) {
+      throw error;
+    }
+    
+
   };
 
   /**
@@ -23,15 +31,26 @@ export class WarrantyTypeService {
    * @param warrantyType 
    */
   public create = async (warrantyType: WarrantyTypeDto) => {
-    let newWarrantyType = WarrantyTypeMapper.toEntity(warrantyType);
-    
-    newWarrantyType = await this.warrantyTypeRepository.save(newWarrantyType);
+    try {
 
-    return WarrantyTypeMapper.toOutputDto(newWarrantyType);
+      let newWarrantyType = await this.warrantyTypeRepository.save(warrantyType);
+      return classToPlain(newWarrantyType);  
+
+    } catch (error) {
+      throw error;
+    }
+    
+
   }
 
   public findByIds = async (ids: number[]) => {
-    const warrantyTypes = await this.warrantyTypeRepository.findByIds(ids);
-    return WarrantyTypeMapper.toListOutputDto(warrantyTypes);
+    try {
+
+      const warrantyTypes = await this.warrantyTypeRepository.findByIds(ids);
+      return classToPlain(warrantyTypes);
+
+    } catch (error) {
+      throw error;
+    }
   }
 }

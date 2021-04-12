@@ -1,3 +1,4 @@
+import { classToPlain } from 'class-transformer';
 import { getCustomRepository, getConnection } from 'typeorm';
 import { Aparment } from '../database/entities/aparments';
 import { StorageUnitDto } from '../dto/storageUnit.dto';
@@ -15,20 +16,28 @@ export class StorageUnitService {
    *
    */
   public findAll = async () => {
-    const storage_unit = await this.storageUnitRepository.find();
-    return storage_unit;
+    try {
+
+      const storage_unit = await this.storageUnitRepository.find();
+      return classToPlain(storage_unit); 
+
+    } catch (error) {
+      throw error;
+    }
   };
 
   /**
    * Create new Parking
    * @param {Aparment}  aparment entity
-   * @param {StorageUnitDtp} StorageUnitDtp building Dto
    */
-  public create = async (storageUnit: StorageUnitDto, aparment: Aparment) => {
-    let newStorageUnit = StorageUnitMapper.toEntity(storageUnit, aparment);
+  public create = async (storageUnit: StorageUnitDto) => {
+    try {
 
-    newStorageUnit = await this.storageUnitRepository.save(newStorageUnit);
+      const newStorageUnit = await this.storageUnitRepository.save(storageUnit);
+      return classToPlain(newStorageUnit);      
 
-    return StorageUnitMapper.toOutputDto(newStorageUnit);
+    } catch (error) {
+      throw error;
+    }
   };
 }

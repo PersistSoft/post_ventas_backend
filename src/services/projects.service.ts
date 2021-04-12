@@ -2,6 +2,7 @@ import { getCustomRepository, getConnection } from 'typeorm';
 import { ProjectDto } from '../dto/project.dto';
 import { ProjectRepository } from './../repositories/project.repository';
 import { ProjectMapper } from './../mapper/projectType.mapper';
+import { classToPlain } from 'class-transformer';
 
 export class ProjectService {
   private projectRepository: ProjectRepository;
@@ -14,24 +15,47 @@ export class ProjectService {
    * Find all projects
    */
   public findAll = async () => {
-    const projects = await this.projectRepository.find();
-    return projects;
+    try {
+
+      const projects = await this.projectRepository.find();
+      return classToPlain(projects);  
+
+    } catch (error) {
+      throw error;
+    }
   };
+
   /**
    * Find one by projects
    * @param {number} id project id
    */
   public findById = async (idProject: number) => {
-    const project = await this.projectRepository.findById(idProject);
-    return project;
+    try {
+
+      const project = await this.projectRepository.findById(idProject);
+
+      if(!project){
+        throw `Project with id: ${idProject} doesn't exist`;
+      }
+      
+      return classToPlain(project);
+
+    } catch (error) {
+      throw error;
+    }
   };
+
   /**
    * Create a Project
    */
   public create = async (project: ProjectDto) => {
-    let newProject = ProjectMapper.toEntity(project);
-    newProject = await this.projectRepository.save(newProject);
+    try {
 
-    return ProjectMapper.toOutputDto(newProject);
+      let newProject = await this.projectRepository.save(project);
+      return classToPlain(newProject);
+
+    } catch (error) {
+      throw error;
+    }
   };
 }

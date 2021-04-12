@@ -7,12 +7,20 @@ import { AparmentType } from '../database/entities/aparmentType';
 
 import { AparmentRepository } from './../repositories/aparments.repository';
 import { ApartmentMapper } from '../mapper/aparment.mapper';
+import { classToPlain } from 'class-transformer';
+import { AparmentTypeService } from './aparmentType.service';
+import { BuildingService } from './building.service';
 
 export class AparmentService {
   private aparmentRepository: AparmentRepository;
+  private apartmentType: AparmentTypeService;
+  private buildingService: BuildingService;
+
 
   constructor() {
     this.aparmentRepository = getConnection('postventa').getCustomRepository(AparmentRepository);
+    this.apartmentType = new AparmentTypeService();
+    this.buildingService = new BuildingService();
   }
 
   /**
@@ -43,11 +51,17 @@ export class AparmentService {
    * @param {AparmentType} ApartmentType  entity
    */
 
-  public create = async (aparment: AparmentDto, building: Building, type: AparmentType) => {
-    let newAparment: Aparment = ApartmentMapper.toEntity(aparment, building, type);
-    console.log(newAparment);
-    newAparment = await this.aparmentRepository.save(newAparment);
+  public create = async (aparment: AparmentDto) => {
+    try {
 
-    return ApartmentMapper.toOutputDto(newAparment);
+      const building = await this.buildingService.findById(aparment.building.id);
+      const type = await this.apartmentType.findById(aparment.type.id);
+
+      const newAparment = await this.aparmentRepository.save(aparment);
+      return classToPlain(newAparment);      
+
+    } catch (error) {
+      throw  error;
+    }
   };
 }

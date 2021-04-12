@@ -30,8 +30,14 @@ export class StorageUnitController {
    */
 
   public parkings = async (req: Request, res: Response) => {
-    let storage_units = await this.storageUnitService.findAll();
-    res.send(storage_units).json;
+    try {
+
+      let storage_units = await this.storageUnitService.findAll();
+      res.send(storage_units).json;  
+
+    } catch (error) {
+      res.status(500).json(error); 
+    }
   };
 
   /**
@@ -40,20 +46,13 @@ export class StorageUnitController {
   public create = async (req: Request, res: Response, next: NextFunction) => {
     try {
       let storage_unit: StorageUnitDto = req.body;
-
-      let aparment = (await this.aparmentService.findById(storage_unit.aparment_id));
-
-      if (!storage_unit || !aparment) {
-        next(Boom.badRequest('Doest not found aparmet'));
-      }
       
-      let apt = new Aparment();
-      apt.id = aparment.id;
+      const newStorageUnit = await this.storageUnitService.create(storage_unit);
 
-      storage_unit = await this.storageUnitService.create(storage_unit, apt);    
-      res.status(201).json(storage_unit);apt
+      res.status(201).json(storage_unit);
+
     } catch (error) {
-      next(Boom.badImplementation(error));
+      res.status(500).json(error);
     }
   };
 
@@ -73,7 +72,7 @@ export class StorageUnitController {
 
   public routes() {
     this.router.get('/', this.parkings);
-    this.router.post('/', validationHandler(StorageUnitSchema), this.create);
+    this.router.post('/', this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);
   }

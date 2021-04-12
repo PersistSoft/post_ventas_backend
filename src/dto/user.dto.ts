@@ -1,3 +1,4 @@
+import { RoleDto } from "./role.dto";
 
 export interface UserDto {
   id: number;
@@ -6,5 +7,5 @@ export interface UserDto {
   lastName: string;
   email: string;
   password: string;
-  rolId: number;
+  role: RoleDto;
 }

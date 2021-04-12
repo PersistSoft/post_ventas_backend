@@ -1,8 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { UserService } from '../services/users.service';
-import passport from 'passport';
 import '../auth/strategies/jwt';
-import { roleValidation } from '../utils/middleware/roleValidation';
 
 export class UserController {
   public router: Router;
@@ -23,8 +21,14 @@ export class UserController {
    */
 
   public users = async (req: Request, res: Response) => {
-    let users = await this.userService.findAll();
-    res.send(users).json;
+    try {
+
+      let users = await this.userService.findAll();
+      res.send(users).json;  
+
+    } catch (error) {
+      res.status(500).json(error);
+    }
   };
 
   /**
@@ -49,7 +53,8 @@ export class UserController {
   }
 
   public routes() {
-    this.router.get('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.users);
+    //this.router.get('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.users);
+    this.router.get('/', this.users);
     this.router.post('/', this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);

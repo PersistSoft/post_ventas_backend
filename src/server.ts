@@ -95,13 +95,13 @@ class Server {
     this.app.use(`/${this.apiPrefix}/users`, this.userController.router);
     this.app.use(`/${this.apiPrefix}/projects`, this.projectController.router);
     this.app.use(`/${this.apiPrefix}/buildings`, this.buildingController.router);
-    this.app.use(`/${this.apiPrefix}/aparments`, this.aparmentsController.router);
-    this.app.use(`/${this.apiPrefix}/aparmentstypes`, this.aparmentTypeController.router);
+    this.app.use(`/${this.apiPrefix}/apartments`, this.aparmentsController.router);
+    this.app.use(`/${this.apiPrefix}/apartmentTypes`, this.aparmentTypeController.router);
     this.app.use(`/${this.apiPrefix}/parking`, this.parkingController.router);
     this.app.use(`/${this.apiPrefix}/storage`, this.storageUnitController.router);
-    this.app.use(`/${this.apiPrefix}/client`, this.clientController.router);
+    this.app.use(`/${this.apiPrefix}/clients`, this.clientController.router);
     this.app.use(`/${this.apiPrefix}/warranties`, this.warrantyController.router);
-    this.app.use(`/${this.apiPrefix}/warrantytype`, this.warrantyTypeController.router);
+    this.app.use(`/${this.apiPrefix}/warrantyTypes`, this.warrantyTypeController.router);
     this.app.use(`/${this.apiPrefix}/status`, this.statusController.router);
     this.app.use(`/${this.apiPrefix}/contacts`, this.contactInfoController.router);
 

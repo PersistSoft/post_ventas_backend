@@ -12,6 +12,7 @@ import {
 import { User } from './user';
 import { Project } from './project';
 import { Aparment } from './aparments';
+import { Exclude } from 'class-transformer';
 
 @Entity('buildings')
 @Unique(['name'])
@@ -28,9 +29,11 @@ export class Building {
   @Column({ name: 'aparments_number' })
   aparmentsNumber: number;
 
+  @Exclude()
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
-
+  
+  @Exclude()
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
 

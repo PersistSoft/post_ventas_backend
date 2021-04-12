@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { WarrantyService } from './../services/warranty.service';
-import { WarrantySchema } from './../utils/schema/warranty.schema';
-import { validationHandler } from './../utils/middleware/schemaValidation';
 import { WarrantyDto } from '../dto/warranty.dto';
 
 export class WarrantyController {
@@ -23,8 +21,14 @@ export class WarrantyController {
    */
 
   public warranties = async (req: Request, res: Response) => {
-    let warranties = await this.warrantyService.findAll();
-    res.status(200).json(warranties);
+    try {
+      
+      let warranties = await this.warrantyService.findAll();
+      res.status(200).json(warranties);  
+
+    } catch (error) {
+      res.status(500).json(error);
+    }
   };
 
   /**
@@ -38,7 +42,7 @@ export class WarrantyController {
       res.status(200).jsonp(warrantyOutput);  
 
     } catch (error) {
-      next(error);
+      res.status(500).json(error);
     }
   }
 
@@ -58,7 +62,7 @@ export class WarrantyController {
 
   public routes() {
     this.router.get('/', this.warranties);
-    this.router.post('/', validationHandler(WarrantySchema), this.create);
+    this.router.post('/', this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);
   }

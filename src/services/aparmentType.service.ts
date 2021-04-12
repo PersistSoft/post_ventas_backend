@@ -1,3 +1,4 @@
+import { classToPlain } from 'class-transformer';
 import { getConnection } from 'typeorm';
 import { ApartmentTypeDto } from '../dto/apartmentType.dto';
 import { ApartmentTypeMapper } from '../mapper/apartmentType.mapper';
@@ -15,25 +16,39 @@ export class AparmentTypeService {
    *
    */
   public findAll = async () => {
-    const aparmentsTypes = this.aparmentTypeRepository.find();
-    return aparmentsTypes;
+    try {
+      
+      const aparmentsTypes = this.aparmentTypeRepository.find();
+      return classToPlain(aparmentsTypes);  
+
+    } catch (error) {
+      throw  error;
+    }
+    
   };
 
   /**
    *
    */
   public findById = async (idType: number) => {
-    console.log('aparmentTypeService');
-    const aparmentsType = this.aparmentTypeRepository.findById(idType);
-    return aparmentsType;
+    try {
+    
+      const aparmentsType = await this.aparmentTypeRepository.findById(idType);
+      return classToPlain(aparmentsType);
+
+    } catch (error) {
+      throw error;
+    }
   };
 
   public create = async (apartmentTypeDto: ApartmentTypeDto) => {
-    console.log('hey');
-    let newApartmentType = ApartmentTypeMapper.toEntity(apartmentTypeDto);
-    console.log('n', newApartmentType);
-    newApartmentType = await this.aparmentTypeRepository.save(newApartmentType);
+    try {
 
-    return ApartmentTypeMapper.toOutputDto(newApartmentType);
+      let aparmentType = await this.aparmentTypeRepository.save(apartmentTypeDto);
+      return classToPlain(aparmentType);
+
+    } catch (error) {
+      throw error;
+    }
   };
 }
