@@ -1,4 +1,3 @@
-import { type } from 'os';
 import { Aparment } from '../database/entities/aparments';
 import { AparmentType } from '../database/entities/aparmentType';
 import { Building } from '../database/entities/building';
@@ -17,24 +16,11 @@ export class ApartmentMapper {
   }
 
 
-  public static toSingleEntity(apartmentDto: AparmentDto): Aparment {
-    console.log('::::apartmentDto ',apartmentDto);
-    
-    const aparment = new Aparment();
-    apartmentDto.id = apartmentDto.id;
-    
-    return aparment;
+  public static toSingleEntity(apartmentDto: AparmentDto) {
+   
   }
 
-  public static toOutputDto(apartment: Aparment): AparmentDto {
-    const apartmentDto: AparmentDto = {
-      id: apartment.id,
-      name: apartment.name,
-      deliveryDate: apartment.deliveryDate,
-      building_id: apartment?.building?.id,
-      type_id: apartment?.type?.id,
-    };
+  public static toOutputDto(apartment: Aparment) {
 
-    return apartmentDto;
   }
 }

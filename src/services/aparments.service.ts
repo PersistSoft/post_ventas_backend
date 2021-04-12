@@ -41,7 +41,7 @@ export class AparmentService {
       throw `Apartment with id: ${idAparment} doesn't exist`;
     }
     
-    return ApartmentMapper.toOutputDto(aparment);
+    return classToPlain(aparment);
   };
 
   /**

@@ -11,29 +11,11 @@ export class WarrantyTypeMapper {
     return warrantyType;
   }
 
-  public static toOutputDto(warrantyType: WarrantyType): WarrantyTypeDto {
-    
-    const warrantyTypeDto: WarrantyTypeDto = {
-      'id': warrantyType.id,
-      'name': warrantyType.name
-    }
+  public static toOutputDto(warrantyType: WarrantyType) {
 
-    return warrantyTypeDto;
   }
 
-  public static toListOutputDto(warrantyTypes: WarrantyType[]): WarrantyTypeDto[] {
-    let warrantyTypesDto: WarrantyTypeDto[] = [];
+  public static toListOutputDto(warrantyTypes: WarrantyType[]) {
 
-    warrantyTypes.forEach((warrantyType) => {
-      const warrantyTypeDto: WarrantyTypeDto = {
-        'id': warrantyType.id,
-        'name': warrantyType.name
-      }
-
-      warrantyTypesDto.push(warrantyTypeDto);
-
-    });
-
-    return warrantyTypesDto;
   }
 }

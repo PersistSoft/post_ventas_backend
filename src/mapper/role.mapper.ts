@@ -3,21 +3,11 @@ import { RoleDto } from "../dto/role.dto";
 
 
 export class RoleMapper {
-  public static toEntity(roleDto: RoleDto): Role{ 
-    const role = new Role();
-    
-    role.name = roleDto.name;
+  public static toEntity(roleDto: RoleDto){ 
 
-    return role;
   }
 
-  public static toOutputDto(role: Role): RoleDto {
-    
-    const roleDto: RoleDto = {
-      'id': role.id,
-      'name': role.name
-    }
+  public static toOutputDto(role: Role) {
 
-    return roleDto;
   }
 }
