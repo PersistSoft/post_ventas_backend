@@ -16,7 +16,7 @@ import { Project } from './project';
 import { Exclude } from 'class-transformer';
 
 @Entity('users')
-@Unique(['username','email'])
+@Unique(['username', 'email'])
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -28,7 +28,7 @@ export class User {
   name: string;
 
   @Column()
-  lastName: string;
+  lastname: string;
 
   @Column({ type: 'varchar', nullable: false, length: 50 })
   email: string;
@@ -47,7 +47,7 @@ export class User {
 
   @ManyToOne(() => Role, { eager: true })
   @JoinColumn([{ name: 'id_role', referencedColumnName: 'id' }])
-  role: Role
+  role: Role;
 
   @ManyToMany((type) => Project, { eager: true })
   @JoinTable({
