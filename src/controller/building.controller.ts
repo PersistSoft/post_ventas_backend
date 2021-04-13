@@ -26,10 +26,8 @@ export class BuildingController {
 
   public buildings = async (req: Request, res: Response) => {
     try {
-
       let buildings = await this.buildingService.findAll();
-      res.send(buildings).json;  
-
+      res.send(buildings).json;
     } catch (error) {
       res.status(500).json(error);
     }
@@ -40,11 +38,9 @@ export class BuildingController {
    */
   public create = async (req: Request, res: Response, next: NextFunction) => {
     try {
-
       let buildingDto: BuildingDto = req.body;
       const newBuildingDto = await this.buildingService.create(buildingDto);
       res.status(201).json(newBuildingDto);
-
     } catch (error) {
       res.status(500).json(error);
     }
