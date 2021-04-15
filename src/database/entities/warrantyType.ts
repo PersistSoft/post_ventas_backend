@@ -10,10 +10,13 @@ export class WarrantyType {
   @Column()
   name: string;
 
+  @Column({ nullable: true, default: null })
+  explanation: string;
+
   @Exclude()
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
-  
+
   @Exclude()
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;

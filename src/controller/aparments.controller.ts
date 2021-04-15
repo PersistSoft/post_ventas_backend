@@ -36,12 +36,9 @@ export class AparmentsController {
    */
 
   public aparments = async (req: Request, res: Response, next: NextFunction) => {
-
     try {
-      
       let aparments = await this.aparmentService.findAll();
-      res.status(200).json(aparments);  
-
+      res.status(200).json(aparments);
     } catch (error) {
       res.status(500).json(error);
     }
@@ -77,7 +74,7 @@ export class AparmentsController {
 
   public routes() {
     this.router.get('/', this.aparments);
-    this.router.post('/', validationHandler(aparmentSchema), this.create);
+    this.router.post('/', this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);
   }
