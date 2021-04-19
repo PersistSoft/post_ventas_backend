@@ -45,6 +45,20 @@ export class AparmentsController {
   };
 
   /**
+   * Get Aparments By Building Id
+   */
+
+  public aparmentsByBuildingId = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      let idBuil: number = parseInt(req.params.idBuilding);
+      let aparments = await this.aparmentService.findByBuildingId(idBuil);
+      res.status(200).json(aparments);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  };
+
+  /**
    * Crete new Aparment
    */
   public create = async (req: Request, res: Response, next: NextFunction) => {
@@ -74,6 +88,7 @@ export class AparmentsController {
 
   public routes() {
     this.router.get('/', this.aparments);
+    this.router.get('/:idBuilding', this.aparmentsByBuildingId);
     this.router.post('/', this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);

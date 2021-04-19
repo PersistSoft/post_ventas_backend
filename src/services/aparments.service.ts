@@ -42,6 +42,18 @@ export class AparmentService {
 
     return classToPlain(aparment);
   };
+  /**
+   *@param {number}  idBuilding id
+   */
+  public findByBuildingId = async (idBuilding: number) => {
+    let aparment = await this.aparmentRepository.findByBuildingId(idBuilding);
+
+    if (!aparment) {
+      throw `Apartment with id: ${idBuilding} doesn't exist`;
+    }
+
+    return classToPlain(aparment);
+  };
 
   /**
    * Create a new Aparment

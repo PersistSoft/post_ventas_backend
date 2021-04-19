@@ -59,7 +59,6 @@ export class BuildingController {
   public buildingsByProject = async (req: Request, res: Response) => {
     try {
       let idPro: number = parseInt(req.params.idProject);
-      console.log(idPro);
       let buildings = await this.buildingService.findByProjectId(idPro);
       res.send(buildings).json;
     } catch (error) {
