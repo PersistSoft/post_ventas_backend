@@ -16,7 +16,6 @@ export class AparmentService {
   private apartmentType: AparmentTypeService;
   private buildingService: BuildingService;
 
-
   constructor() {
     this.aparmentRepository = getConnection('postventa').getCustomRepository(AparmentRepository);
     this.apartmentType = new AparmentTypeService();
@@ -35,12 +34,24 @@ export class AparmentService {
    *@param {number}  idAparment id
    */
   public findById = async (idAparment: number) => {
-    let aparment = await this.aparmentRepository.findById(idAparment) as Aparment;
-    
-    if(!aparment){
+    let aparment = (await this.aparmentRepository.findById(idAparment)) as Aparment;
+
+    if (!aparment) {
       throw `Apartment with id: ${idAparment} doesn't exist`;
     }
-    
+
+    return classToPlain(aparment);
+  };
+  /**
+   *@param {number}  idBuilding id
+   */
+  public findByBuildingId = async (idBuilding: number) => {
+    let aparment = await this.aparmentRepository.findByBuildingId(idBuilding);
+
+    if (!aparment) {
+      throw `Apartment with id: ${idBuilding} doesn't exist`;
+    }
+
     return classToPlain(aparment);
   };
 
@@ -53,15 +64,14 @@ export class AparmentService {
 
   public create = async (aparment: AparmentDto) => {
     try {
-
       const building = await this.buildingService.findById(aparment.building.id);
+
       const type = await this.apartmentType.findById(aparment.type.id);
 
       const newAparment = await this.aparmentRepository.save(aparment);
-      return classToPlain(newAparment);      
-
+      return classToPlain(newAparment);
     } catch (error) {
-      throw  error;
+      throw error;
     }
   };
 }

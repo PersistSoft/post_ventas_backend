@@ -8,6 +8,7 @@ import {
   ManyToOne,
   OneToOne,
   JoinColumn,
+  Unique,
 } from 'typeorm';
 
 import { Building } from './building';
@@ -18,6 +19,7 @@ import { AparmentType } from './aparmentType';
 import { Exclude } from 'class-transformer';
 
 @Entity('aparments')
+// @Unique(['name'])
 export class Aparment {
   @PrimaryGeneratedColumn()
   id: number;

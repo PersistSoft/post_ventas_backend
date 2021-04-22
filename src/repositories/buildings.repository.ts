@@ -6,4 +6,8 @@ export class BuildingRepository extends Repository<Building> {
   findById(idBuilding: number) {
     return this.findOne({ id: idBuilding });
   }
+
+  findByProjectId(idProject) {
+    return this.find({ where: { project: { id: idProject } }, order: { name: 'ASC' } });
+  }
 }

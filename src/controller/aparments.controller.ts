@@ -36,12 +36,23 @@ export class AparmentsController {
    */
 
   public aparments = async (req: Request, res: Response, next: NextFunction) => {
-
     try {
-      
       let aparments = await this.aparmentService.findAll();
-      res.status(200).json(aparments);  
+      res.status(200).json(aparments);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  };
 
+  /**
+   * Get Aparments By Building Id
+   */
+
+  public aparmentsByBuildingId = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      let idBuil: number = parseInt(req.params.idBuilding);
+      let aparments = await this.aparmentService.findByBuildingId(idBuil);
+      res.status(200).json(aparments);
     } catch (error) {
       res.status(500).json(error);
     }
@@ -77,7 +88,8 @@ export class AparmentsController {
 
   public routes() {
     this.router.get('/', this.aparments);
-    this.router.post('/', validationHandler(aparmentSchema), this.create);
+    this.router.get('/:idBuilding', this.aparmentsByBuildingId);
+    this.router.post('/', this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);
   }

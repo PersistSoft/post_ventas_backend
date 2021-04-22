@@ -33,13 +33,13 @@ export class Client {
   @Column({ type: 'varchar', nullable: false })
   phone: number;
 
-  @Column({ nullable: false, default: true })
+  @Column({ nullable: false, default: false })
   dataController: boolean;
 
   @Exclude()
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
-  
+
   @Exclude()
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;

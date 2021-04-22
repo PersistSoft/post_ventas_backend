@@ -53,6 +53,20 @@ export class BuildingController {
   }
 
   /**
+   * Get all Buildings by Project
+   */
+
+  public buildingsByProject = async (req: Request, res: Response) => {
+    try {
+      let idPro: number = parseInt(req.params.idProject);
+      let buildings = await this.buildingService.findByProjectId(idPro);
+      res.send(buildings).json;
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  };
+
+  /**
    * Delete Building
    */
   public delete(req: Request, res: Response) {
@@ -61,6 +75,7 @@ export class BuildingController {
 
   public routes() {
     this.router.get('/', this.buildings);
+    this.router.get('/:idProject', this.buildingsByProject);
     this.router.post('/', this.create);
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);

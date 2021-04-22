@@ -22,6 +22,8 @@ import { AuthController } from './controller/auth.controller';
 import { Configuration } from './config';
 import { createConnection } from 'typeorm';
 import { ContactInfoController } from './controller/contactInfo.controller';
+import { FileController } from './controller/file.controller';
+
 import dotenv from 'dotenv';
 
 import compression from 'compression';
@@ -45,6 +47,7 @@ class Server {
   private aparmentTypeController: AparmentTypeController;
   private authController: AuthController;
   private contactInfoController: ContactInfoController;
+  private fileController: FileController;
   private apiPrefix = 'api';
 
   private app: express.Application;
@@ -89,6 +92,7 @@ class Server {
     this.statusController = new StatusController();
     this.authController = new AuthController();
     this.contactInfoController = new ContactInfoController();
+    this.fileController = new FileController();
 
     this.app.use(this.indexController.router);
     this.app.use(`/${this.apiPrefix}/roles`, this.roleController.router);
@@ -104,6 +108,7 @@ class Server {
     this.app.use(`/${this.apiPrefix}/warrantyTypes`, this.warrantyTypeController.router);
     this.app.use(`/${this.apiPrefix}/status`, this.statusController.router);
     this.app.use(`/${this.apiPrefix}/contacts`, this.contactInfoController.router);
+    this.app.use(`/${this.apiPrefix}/files`, this.fileController.router);
 
     this.app.use(`/${this.apiPrefix}/auth`, this.authController.router);
     this.app.use(`/swagger`, swaggerUi.serve, swaggerUi.setup(swaggerDocument));

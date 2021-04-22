@@ -20,10 +20,8 @@ export class BuildingService {
    */
   public findAll = async () => {
     try {
-      
       const buildings = await this.buildingRepository.find();
       return classToPlain(buildings);
-
     } catch (error) {
       throw error;
     }
@@ -33,15 +31,28 @@ export class BuildingService {
    */
   public findById = async (idBuilding: number) => {
     try {
-      
       const building = await this.buildingRepository.findById(idBuilding);
 
-      if(!building){
+      if (!building) {
         throw `Building with id: ${idBuilding} doesn't exist.`;
       }
 
-      return building;  
+      return building;
+    } catch (error) {
+      throw error;
+    }
+  };
+  /**
+   * @param {number} id Project id
+   */
+  public findByProjectId = async (idProject: number) => {
+    try {
+      const building = await this.buildingRepository.findByProjectId(idProject);
+      if (!building) {
+        throw `Project with id: ${idProject} doesn't have buildings`;
+      }
 
+      return building;
     } catch (error) {
       throw error;
     }
@@ -51,17 +62,13 @@ export class BuildingService {
    * Create a new Building
    */
   public create = async (building: BuildingDto) => {
-    
     try {
-
       const project = this.projectService.findById(building.project.id);
-      
-      let newBuildingType = await this.buildingRepository.save(building);
-      return classToPlain(newBuildingType);  
 
+      let newBuildingType = await this.buildingRepository.save(building);
+      return classToPlain(newBuildingType);
     } catch (error) {
-      throw error; 
+      throw error;
     }
-    
   };
 }
