@@ -6,4 +6,8 @@ export class ParkingRepository extends Repository<Parking> {
   findById(idParking: number) {
     return this.findOne({ id: idParking });
   }
+
+  findByName(name: string) {
+    return this.findOne({ name: name});
+  }
 }

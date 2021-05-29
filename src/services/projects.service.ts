@@ -3,6 +3,7 @@ import { ProjectDto } from '../dto/project.dto';
 import { ProjectRepository } from './../repositories/project.repository';
 import { ProjectMapper } from './../mapper/projectType.mapper';
 import { classToPlain } from 'class-transformer';
+import { Project } from '../database/entities/project';
 
 export class ProjectService {
   private projectRepository: ProjectRepository;
@@ -52,10 +53,21 @@ export class ProjectService {
     try {
 
       let newProject = await this.projectRepository.save(project);
-      return classToPlain(newProject);
+      return classToPlain(newProject) as Project;
 
     } catch (error) {
       throw error;
     }
   };
+
+  public findByName = async (name: string) => {
+    try {
+      
+      const project = await this.projectRepository.findByName(name);
+      return project;
+
+    } catch (error) {
+      throw error;
+    }
+  }
 }

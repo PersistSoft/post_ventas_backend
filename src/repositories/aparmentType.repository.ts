@@ -7,4 +7,8 @@ export class AparmentTypeRepository extends Repository<AparmentType> {
     console.log('apartmentType', idType);
     return this.findOne({ id: idType });
   }
+
+  findByName(name: string) {
+    return this.findOne({ type: name});
+  }
 }

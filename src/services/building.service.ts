@@ -1,5 +1,6 @@
 import { classToPlain } from 'class-transformer';
 import { getCustomRepository, getConnection } from 'typeorm';
+import { Building } from '../database/entities/building';
 import { BuildingDto } from '../dto/building.dto';
 import { ProjectDto } from '../dto/project.dto';
 import { BuildingRepository } from '../repositories/buildings.repository';
@@ -65,8 +66,20 @@ export class BuildingService {
     try {
       const project = this.projectService.findById(building.project.id);
 
-      let newBuildingType = await this.buildingRepository.save(building);
-      return classToPlain(newBuildingType);
+      let newBuilding= await this.buildingRepository.save(building);
+      return classToPlain(newBuilding) as Building;
+
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  public findByName = async (name: string) => {
+    try {
+      
+      const build = await this.buildingRepository.findByName(name);
+      return build;
+      
     } catch (error) {
       throw error;
     }

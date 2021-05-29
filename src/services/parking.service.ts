@@ -1,6 +1,7 @@
 import { classToPlain } from 'class-transformer';
 import { getCustomRepository, getConnection } from 'typeorm';
 import { Aparment } from '../database/entities/aparments';
+import { Parking } from '../database/entities/parkings';
 import { ParkingDto } from '../dto/parking.dto';
 import { AparmentRepository } from '../repositories/aparments.repository';
 import { ParkingRepository } from '../repositories/parking.repository';
@@ -58,8 +59,19 @@ export class ParkingService {
 
       await this.aparmentService.findById(parkingDto.aparment.id);
       const newParking = await this.parkingRepository.save(parkingDto);
-      return classToPlain(newParking);
+      return classToPlain(newParking) as Parking;
 
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  public findByName = async (name: string) => {
+    try {
+      
+      const parking = await this.parkingRepository.findByName(name);
+      return parking;
+      
     } catch (error) {
       throw error;
     }

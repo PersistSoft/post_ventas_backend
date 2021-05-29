@@ -6,4 +6,8 @@ export class StorageUnitRepository extends Repository<StorageUnit> {
   findById(idStorage: number) {
     return this.findOne({ id: idStorage });
   }
+
+  findByName(name: string) {
+    return this.findOne({ name: name});
+  }
 }
