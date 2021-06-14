@@ -2,11 +2,8 @@ import { getConnection } from 'typeorm';
 
 import { AparmentDto } from '../dto/aparment.dto';
 import { Aparment } from '../database/entities/aparments';
-import { Building } from '../database/entities/building';
-import { AparmentType } from '../database/entities/aparmentType';
 
 import { AparmentRepository } from './../repositories/aparments.repository';
-import { ApartmentMapper } from '../mapper/aparment.mapper';
 import { classToPlain } from 'class-transformer';
 import { AparmentTypeService } from './aparmentType.service';
 import { BuildingService } from './building.service';
@@ -64,10 +61,10 @@ export class AparmentService {
 
   public create = async (aparment: AparmentDto) => {
     try {
+      
       const building = await this.buildingService.findById(aparment.building.id);
-
       const type = await this.apartmentTypeService.findById(aparment.type.id);
-
+      
       const newAparment = await this.aparmentRepository.save(aparment);
       return classToPlain(newAparment) as Aparment;
 

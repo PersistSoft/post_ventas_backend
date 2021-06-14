@@ -91,8 +91,6 @@ export class FileService {
         throw 'You need a signature';
       }
       
-      console.log(signatureBase64);
-      
       var signature = Buffer.from(signatureBase64, 'base64');
 
       let newFile =  new PSFile();
@@ -110,8 +108,13 @@ export class FileService {
   }
 
   public massiveLoading = async (file: File) => {
-    let allDate: LoadingMassiveDto[] = [];
     const errors: LoadMassiveErrorDto[] = [];
+    let projectInserted = 0;
+    let apartmentsInserted = 0;
+    let apartmentTypeInserted = 0;
+    let buildingInserted = 0;
+    let storageUnitInserted = 0;
+    let parkingInserted = 0;
 
     try {
 
@@ -132,26 +135,36 @@ export class FileService {
             let apartment;
 
             try {
+
+              if(data[0] === null){
+                throw 'Project colum is empty';
+              }
+
               project = await this.projectService.findByName(data[0]);
+              
               if(project === undefined){
                 const newProject = new Project();
                 newProject.name = data[0];
                 newProject.address = data[1];
-  
+
                 project = await this.projectService.create(newProject); 
+                projectInserted++;
               }
             } catch (error) {
               const errorDto = new LoadMassiveErrorDto();
               errorDto.row = index;
               errorDto.column = 'Project';
-              errorDto.error = error.message;
+              errorDto.error = error.message || error;
               errors.push(errorDto);
-
-              
             }
 
 
             try {
+
+              if(data[2] === null){
+                throw 'Building colum is empty';
+              }
+
               building = await this.buildingService.findByName(data[2]);
             
               if(building === undefined){
@@ -162,18 +175,23 @@ export class FileService {
                 newBuilding.aparmentsNumber = data[4];
   
                 building = await this.buildingService.create(newBuilding);
+                buildingInserted++;
               }
             } catch (error) {
               const errorDto = new LoadMassiveErrorDto();
               errorDto.row = index;
               errorDto.column = 'Building';
-              errorDto.error = error.message;
+              errorDto.error = error.message || error;
               errors.push(errorDto);
-               
             }
 
             
             try {
+
+              if(data[7] === null){
+                throw 'Apartment Type colum is empty';
+              }
+
               apartmentType = await this.apartmentTypeService.findByName(data[7]);
 
               if(apartmentType === undefined){
@@ -181,38 +199,49 @@ export class FileService {
                 newApartmentType.type = data[7];
   
                 apartmentType = await this.apartmentTypeService.create(newApartmentType);
+                apartmentTypeInserted++;
               }  
             } catch (error) {
               const errorDto = new LoadMassiveErrorDto();
               errorDto.row = index;
               errorDto.column = 'Apartment Type';
-              errorDto.error = error.message;
+              errorDto.error = error.message || error;
               errors.push(errorDto);
             }
-            
-            
-            
+          
             try {
-              apartment = await this.apartmentService.findByName(data[5]);
+              
+              if(data[5] === null || !apartmentType || !building){
+                throw 'There are not enough data to register apartment';
+              }
 
+              apartment = await this.apartmentService.findByName(data[5]);
+            
               if(apartment === undefined){
                 const newApartment = new Aparment();
-                newApartment.name = data[5];
-                newApartment.deliveryDate = data[6];
+                newApartment.name = `${data[5]}`;
+                
+                newApartment.deliveryDate = data[6] ? data[6] : null;
                 newApartment.type = apartmentType;
                 newApartment.building = building;
-  
+              
                 apartment = await this.apartmentService.create(newApartment);
+                apartmentsInserted++;
               }
             } catch (error) {
               const errorDto = new LoadMassiveErrorDto();
               errorDto.row = index;
               errorDto.column = 'Apartment';
-              errorDto.error = error.message;
+              errorDto.error = error.message || error;
               errors.push(errorDto);
             }
             
             try {
+
+              if(data[8] === null){
+                throw 'Storage Unit colum is empty';
+              }
+
               let storageUnit = await this.storageUnitService.findByName(data[8]);
 
             
@@ -222,17 +251,23 @@ export class FileService {
                 newStorageUnit.aparment = apartment;
   
                 storageUnit = await this.storageUnitService.create(newStorageUnit);
+                storageUnitInserted++;
               }
             } catch (error) {
               const errorDto = new LoadMassiveErrorDto();
               errorDto.row = index;
               errorDto.column = 'Storage Unit';
-              errorDto.error = error.message;
+              errorDto.error = error.message || error;
               errors.push(errorDto);
               
             }
             
             try {
+
+              if(data[9] === null){
+                throw 'Parking colum is empty';
+              }
+
               let parking = await this.parkingService.findByName(data[9]);
 
               if(parking === undefined){
@@ -241,12 +276,13 @@ export class FileService {
                 newParking.aparment = apartment;
   
                 parking = await this.parkingService.create(newParking);
+                parkingInserted++;
               }
             } catch (error) {
               const errorDto = new LoadMassiveErrorDto();
               errorDto.row = index;
               errorDto.column = 'Parking';
-              errorDto.error = error.message;
+              errorDto.error = error.message || error;
               errors.push(errorDto);
             }
             
@@ -254,10 +290,19 @@ export class FileService {
         }
       });
 
-      console.log(errors);
       
       fs.unlinkSync(file['path']);
-      //return classToPlain(newFile);
+ 
+      return classToPlain({
+        projectInserted,
+        apartmentsInserted,
+        apartmentTypeInserted,
+        buildingInserted,
+        storageUnitInserted,
+        parkingInserted,
+        logs: errors
+      });
+
     } catch (error) {
       throw error;
     }

@@ -19,6 +19,6 @@ export class StorageUnit {
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
 
-  @ManyToOne(() => Aparment, (aparment) => aparment.storageUnits)
+  @ManyToOne(() => Aparment, (aparment) => aparment.storageUnits, { nullable: true })
   aparment: Aparment;
 }

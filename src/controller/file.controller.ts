@@ -92,9 +92,8 @@ export class FileController {
     try {
         
       const file = req['file'] as File;
-      console.log('::::: ',file);
-      this.fileService.massiveLoading(file);
-      res.status(201).json({message: 'success'});
+      const logs = await this.fileService.massiveLoading(file);
+      res.status(201).json(logs);
 
     } catch (error) {
       res.status(500).json(error);
