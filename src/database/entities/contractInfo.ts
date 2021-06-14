@@ -9,9 +9,6 @@ export class ContactInfo {
   @Column()
   name: string;
 
-  @Column()
-  lastname: string;
-
   @Column({ type: 'varchar', nullable: false, length: 50 })
   email: string;
 
