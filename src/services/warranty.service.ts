@@ -50,19 +50,19 @@ export class WarrantyService {
       const warrantyTypes = await this.warrantyTypeService.findByIds(
         warrantyTypeIds
       );
-      console.log('apartment', apartment);
+
       if (!apartment) {
         throw `Apartment with id:${warranty.aparment.id} doesn't exist.`;
       }
-      console.log('contactInfo', contactInfo);
+
       if (!contactInfo) {
         throw `Contact info with id:${warranty.contactInfo.id} doesn't exist.`;
       }
-      console.log('status', status);
+
       if (!status) {
         throw `Status with id:${warranty.status.id} doesn't exist.`;
       }
-      console.log('warrantyTypes', warrantyTypes);
+
       if (!warrantyTypes || warrantyTypes.length == 0) {
         throw `Warranty types ${warranty.warrantyTypes} doesn't exist.`;
       }
