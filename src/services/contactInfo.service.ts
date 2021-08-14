@@ -8,7 +8,9 @@ export class ContactInfoService {
   private contactInfoRepository: ContactInfoRepository;
 
   constructor() {
-    this.contactInfoRepository = getConnection('postventa').getCustomRepository(ContactInfoRepository);
+    this.contactInfoRepository = getConnection('postventa').getCustomRepository(
+      ContactInfoRepository
+    );
   }
 
   /**
@@ -16,10 +18,8 @@ export class ContactInfoService {
    */
   public findAll = async () => {
     try {
-
       const contacts = await this.contactInfoRepository.find();
-      return classToPlain(contacts);  
-
+      return classToPlain(contacts);
     } catch (error) {
       throw error;
     }
@@ -27,29 +27,27 @@ export class ContactInfoService {
 
   /**
    * Create
-   * @param contactInfoDto 
+   * @param contactInfoDto
    */
   public create = async (contactInfoDto: ContactInfoDto) => {
     try {
-
-      let newContactInfo = await this.contactInfoRepository.save(contactInfoDto);
-      return classToPlain(newContactInfo);  
-
+      console.log('contactinfo server', contactInfoDto);
+      let newContactInfo = await this.contactInfoRepository.save(
+        contactInfoDto
+      );
+      return classToPlain(newContactInfo);
     } catch (error) {
       throw error;
     }
-    
-  }
+  };
 
   /**
    * Find by id
    */
   public findById = async (id: number) => {
     try {
-      
       const contact = await this.contactInfoRepository.findById(id);
-      return classToPlain(contact);  
-
+      return classToPlain(contact);
     } catch (error) {
       throw error;
     }
