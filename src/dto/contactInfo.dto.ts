@@ -3,4 +3,5 @@ export interface ContactInfoDto {
   name: string;
   email: string;
   phone: string;
+  dataTreatment: boolean;
 }
