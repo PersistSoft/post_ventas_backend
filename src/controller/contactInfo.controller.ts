@@ -38,7 +38,6 @@ export class ContactInfoController {
   public create = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const contact = req.body as ContactInfoDto;
-      console.log('contact', contact);
       const newContact = await this.contactInfoService.create(contact);
 
       res.status(201).json(newContact);

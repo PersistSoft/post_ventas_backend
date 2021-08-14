@@ -38,37 +38,40 @@ export class WarrantyService {
 
   public create = async (warranty: WarrantyDto) => {
     try {
+      console.log('warranty', warranty);
       const warrantyTypeIds = warranty.warrantyTypes.map((wt) => wt.id);
       const apartment = await this.apartmentService.findById(
         warranty.aparment.id
       );
       const contactInfo = await this.contactInfoService.findById(
-        warranty.contractInfo.id
+        warranty.contactInfo.id
       );
       const status = await this.statusService.findById(warranty.status.id);
       const warrantyTypes = await this.warrantyTypeService.findByIds(
         warrantyTypeIds
       );
-
+      console.log('apartment', apartment);
       if (!apartment) {
         throw `Apartment with id:${warranty.aparment.id} doesn't exist.`;
       }
-
+      console.log('contactInfo', contactInfo);
       if (!contactInfo) {
-        throw `Contact info with id:${warranty.contractInfo.id} doesn't exist.`;
+        throw `Contact info with id:${warranty.contactInfo.id} doesn't exist.`;
       }
-
+      console.log('status', status);
       if (!status) {
         throw `Status with id:${warranty.status.id} doesn't exist.`;
       }
-
+      console.log('warrantyTypes', warrantyTypes);
       if (!warrantyTypes || warrantyTypes.length == 0) {
         throw `Warranty types ${warranty.warrantyTypes} doesn't exist.`;
       }
 
       const newWarranty = await this.warrantyRepository.save(warranty);
+      console.log(newWarranty);
       return classToPlain(newWarranty);
     } catch (error) {
+      console.error(error);
       throw error;
     }
   };

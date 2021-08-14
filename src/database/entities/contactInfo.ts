@@ -19,7 +19,7 @@ export class ContactInfo {
   email: string;
 
   @Column({ type: 'varchar', nullable: false })
-  phone: string;
+  phone: number;
 
   @Column({ name: 'data_treatment', default: false })
   dataTreatment: boolean;

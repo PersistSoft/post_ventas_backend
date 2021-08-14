@@ -2,7 +2,7 @@ import joi from '@hapi/joi';
 
 const name = joi.string();
 const email = joi.string().email();
-const phone = joi.string();
+const phone = joi.number();
 const dataTreatment = joi.boolean();
 
 export const ContactInfoSchema = {

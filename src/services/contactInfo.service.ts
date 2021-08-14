@@ -31,7 +31,6 @@ export class ContactInfoService {
    */
   public create = async (contactInfoDto: ContactInfoDto) => {
     try {
-      console.log('contactinfo server', contactInfoDto);
       let newContactInfo = await this.contactInfoRepository.save(
         contactInfoDto
       );

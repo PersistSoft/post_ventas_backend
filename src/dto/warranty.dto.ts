@@ -9,7 +9,7 @@ export interface WarrantyDto {
   warrantyTypes: WarrantyTypeDto[];
   status: StatusDto;
   value: number;
-  contractInfo: ContactInfoDto;
+  contactInfo: ContactInfoDto;
   closeAt: Date;
   explanation: string;
 }
