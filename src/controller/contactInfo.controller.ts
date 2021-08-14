@@ -2,7 +2,7 @@ import Boom from '@hapi/boom';
 import { NextFunction, Request, Response, Router } from 'express';
 import { ContactInfoDto } from '../dto/contactInfo.dto';
 import { ContactInfoService } from '../services/contactInfo.service';
-import { validationHandler} from './../utils/middleware/schemaValidation';
+import { validationHandler } from './../utils/middleware/schemaValidation';
 import { ContactInfoSchema } from './../utils/schema/contactInfo.schema';
 
 export class ContactInfoController {
@@ -25,29 +25,26 @@ export class ContactInfoController {
 
   public index = async (req: Request, res: Response) => {
     try {
-
       let contacts = await this.contactInfoService.findAll();
-      res.status(200).json(contacts);  
-
+      res.status(200).json(contacts);
     } catch (error) {
       res.status(500).json(error);
     }
   };
 
   /**
-   * Crete new Status
+   * Crete new Contact info
    */
   public create = async (req: Request, res: Response, next: NextFunction) => {
     try {
-
       const contact = req.body as ContactInfoDto;
       const newContact = await this.contactInfoService.create(contact);
-      res.status(201).json(newContact);
 
+      res.status(201).json(newContact);
     } catch (error) {
       res.status(500).json(error);
     }
-  }
+  };
 
   /**
    * Update Status

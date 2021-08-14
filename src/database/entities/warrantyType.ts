@@ -1,8 +1,8 @@
-import { Exclude } from 'class-transformer';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Unique } from 'typeorm';
+import { Exclude } from "class-transformer";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Unique } from "typeorm";
 
-@Entity('warranty_type')
-@Unique(['name'])
+@Entity("warranty_type")
+@Unique(["name"])
 export class WarrantyType {
   @PrimaryGeneratedColumn()
   id: number;
@@ -10,14 +10,11 @@ export class WarrantyType {
   @Column()
   name: string;
 
-  @Column({ nullable: true, default: null })
-  explanation: string;
-
   @Exclude()
-  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
+  @CreateDateColumn({ type: "timestamp", name: "created_at" })
   createdAt: Date;
 
   @Exclude()
-  @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
+  @UpdateDateColumn({ type: "timestamp", name: "updated_at" })
   updatedAt: Date;
 }

@@ -1,22 +1,25 @@
 import { Exclude } from 'class-transformer';
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('contact_info')
 export class ContactInfo {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false, length: 50 })
   name: string;
-
-  @Column()
-  lastname: string;
 
   @Column({ type: 'varchar', nullable: false, length: 50 })
   email: string;
 
   @Column({ type: 'varchar', nullable: false })
-  phone: string;
+  phone: number;
 
   @Column({ name: 'data_treatment', default: false })
   dataTreatment: boolean;
