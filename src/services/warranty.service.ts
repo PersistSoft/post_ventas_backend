@@ -16,8 +16,9 @@ export class WarrantyService {
   private warrantyTypeService: WarrantyTypeService;
 
   constructor() {
-    this.warrantyRepository = getConnection('postventa').getCustomRepository(WarrantyRepository);
-    this.apartmentService =  new AparmentService();
+    this.warrantyRepository =
+      getConnection('postventa').getCustomRepository(WarrantyRepository);
+    this.apartmentService = new AparmentService();
     this.contactInfoService = new ContactInfoService();
     this.statusService = new StatusService();
     this.warrantyTypeService = new WarrantyTypeService();
@@ -28,10 +29,8 @@ export class WarrantyService {
    */
   public findAll = async () => {
     try {
-      
       const warranties = await this.warrantyRepository.find();
-      return classToPlain(warranties);      
-
+      return classToPlain(warranties);
     } catch (error) {
       throw error;
     }
@@ -39,35 +38,41 @@ export class WarrantyService {
 
   public create = async (warranty: WarrantyDto) => {
     try {
-
+      console.log('warranty', warranty);
       const warrantyTypeIds = warranty.warrantyTypes.map((wt) => wt.id);
+      const apartment = await this.apartmentService.findById(
+        warranty.aparment.id
+      );
+      const contactInfo = await this.contactInfoService.findById(
+        warranty.contactInfo.id
+      );
+      const status = await this.statusService.findById(warranty.status.id);
+      const warrantyTypes = await this.warrantyTypeService.findByIds(
+        warrantyTypeIds
+      );
 
-      const apartment = await this.apartmentService.findById(warranty.aparment.id);
-      const contactInfo = await this.contactInfoService.findById(warranty.contractInfo.id);
-      const status  = await this.statusService.findById(warranty.status.id);
-      const warrantyTypes = await this.warrantyTypeService.findByIds(warrantyTypeIds);
-
-      if(!apartment){
+      if (!apartment) {
         throw `Apartment with id:${warranty.aparment.id} doesn't exist.`;
       }
 
-      if(!contactInfo){
-        throw `Contact info with id:${warranty.contractInfo.id} doesn't exist.`;
+      if (!contactInfo) {
+        throw `Contact info with id:${warranty.contactInfo.id} doesn't exist.`;
       }
 
-      if(!status){
-        throw `Status with id:${warranty.status.id} doesn't exist.`; 
+      if (!status) {
+        throw `Status with id:${warranty.status.id} doesn't exist.`;
       }
 
-      if(!warrantyTypes || warrantyTypes.length == 0){
-        throw `Warranty types ${warranty.warrantyTypes} doesn't exist.`; 
+      if (!warrantyTypes || warrantyTypes.length == 0) {
+        throw `Warranty types ${warranty.warrantyTypes} doesn't exist.`;
       }
 
       const newWarranty = await this.warrantyRepository.save(warranty);
+      console.log(newWarranty);
       return classToPlain(newWarranty);
-
     } catch (error) {
+      console.error(error);
       throw error;
     }
-  }
+  };
 }

@@ -14,7 +14,7 @@ import {
 import { Aparment } from './aparments';
 import { WarrantyType } from './warrantyType';
 import { Status } from './status';
-import { ContactInfo } from './contractInfo';
+import { ContactInfo } from './contactInfo';
 import { Exclude } from 'class-transformer';
 
 @Entity('warranties')
@@ -22,13 +22,18 @@ export class Warranty {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'close_at' })
+  @Column({ name: 'close_at', nullable: true })
   closeAt: Date;
+
+  @Column({ nullable: true, default: null })
+  explanation: string;
+  @Column({ nullable: true, default: false })
+  checked: boolean;
 
   @Exclude()
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
-  
+
   @Exclude()
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
@@ -38,7 +43,7 @@ export class Warranty {
 
   @ManyToOne(() => Aparment, (aparment) => aparment.warranties)
   aparment: Aparment;
-  
+
   @ManyToMany((type) => WarrantyType, { eager: true })
   @JoinTable({
     name: 'warranty_warranty_type',
@@ -57,7 +62,7 @@ export class Warranty {
   @JoinColumn()
   status: Status;
 
-  @Column()
+  @Column({ nullable: true })
   value: number;
 
   @ManyToOne(() => ContactInfo)

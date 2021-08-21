@@ -22,29 +22,25 @@ export class WarrantyController {
 
   public warranties = async (req: Request, res: Response) => {
     try {
-      
       let warranties = await this.warrantyService.findAll();
-      res.status(200).json(warranties);  
-
+      res.status(200).json(warranties);
     } catch (error) {
       res.status(500).json(error);
     }
   };
 
   /**
-   * Crete new Users
+   * Crete new Warranty
    */
   public create = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      
       let warranty = req.body as WarrantyDto;
       let warrantyOutput = await this.warrantyService.create(warranty);
-      res.status(200).jsonp(warrantyOutput);  
-
+      res.status(200).jsonp(warrantyOutput);
     } catch (error) {
       res.status(500).json(error);
     }
-  }
+  };
 
   /**
    * Update Users

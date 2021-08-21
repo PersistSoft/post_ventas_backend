@@ -1,5 +1,5 @@
 import { EntityRepository, Repository } from 'typeorm';
-import { ContactInfo } from '../database/entities/contractInfo';
+import { ContactInfo } from '../database/entities/contactInfo';
 
 @EntityRepository(ContactInfo)
 export class ContactInfoRepository extends Repository<ContactInfo> {

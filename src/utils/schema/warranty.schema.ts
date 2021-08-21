@@ -7,13 +7,15 @@ const statusId = joi.number();
 const value = joi.number();
 const contactInfo = joi.number();
 const closeAt = joi.date();
+const explanation = joi.string();
 
 export const WarrantySchema = {
   clientSing: clientSing,
   apartmentId: apartmentId.required(),
   warrantyTypeIds: warrantyTypes.required(),
   statusId: statusId.required(),
-  value: value.required(),
-  contractInfoId: contactInfo.required(),
-  closeAt: closeAt.required()
-}
+  value: value,
+  contactInfoId: contactInfo.required(),
+  closeAt: closeAt,
+  explanation: explanation.required(),
+};
