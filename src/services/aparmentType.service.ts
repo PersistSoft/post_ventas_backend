@@ -1,5 +1,6 @@
 import { classToPlain } from 'class-transformer';
 import { getConnection } from 'typeorm';
+import { AparmentType } from '../database/entities/aparmentType';
 import { ApartmentTypeDto } from '../dto/apartmentType.dto';
 import { ApartmentTypeMapper } from '../mapper/apartmentType.mapper';
 
@@ -45,8 +46,19 @@ export class AparmentTypeService {
     try {
 
       let aparmentType = await this.aparmentTypeRepository.save(apartmentTypeDto);
-      return classToPlain(aparmentType);
+      return classToPlain(aparmentType) as AparmentType;
 
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  public findByName = async (name: string) => {
+    try {
+      
+      const type = await this.aparmentTypeRepository.findByName(name);
+      return type;
+      
     } catch (error) {
       throw error;
     }

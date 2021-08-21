@@ -1,6 +1,7 @@
 import { classToPlain } from 'class-transformer';
 import { getCustomRepository, getConnection } from 'typeorm';
 import { Aparment } from '../database/entities/aparments';
+import { StorageUnit } from '../database/entities/storage_unit';
 import { StorageUnitDto } from '../dto/storageUnit.dto';
 import { StorageUnitMapper } from '../mapper/storageUnit.mapper';
 import { StorageUnitRepository } from '../repositories/storage_unit.repository';
@@ -34,10 +35,21 @@ export class StorageUnitService {
     try {
 
       const newStorageUnit = await this.storageUnitRepository.save(storageUnit);
-      return classToPlain(newStorageUnit);      
+      return classToPlain(newStorageUnit) as StorageUnit;      
 
     } catch (error) {
       throw error;
     }
   };
+
+  public findByName = async(name: string) => {
+    try {
+      
+      const storageUnit = await this.storageUnitRepository.findByName(name);
+      return storageUnit;
+      
+    } catch (error) {
+      throw error;
+    }
+  }
 }

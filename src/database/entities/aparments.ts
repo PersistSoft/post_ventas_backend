@@ -6,9 +6,7 @@ import {
   UpdateDateColumn,
   OneToMany,
   ManyToOne,
-  OneToOne,
   JoinColumn,
-  Unique,
 } from 'typeorm';
 
 import { Building } from './building';
@@ -27,8 +25,11 @@ export class Aparment {
   @Column()
   name: string;
 
-  @Column()
-  deliveryDate: Date;
+  @Column({
+    type: 'date',
+    nullable: true,
+  })
+  deliveryDate!: Date;
 
   @Exclude()
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
@@ -38,19 +39,19 @@ export class Aparment {
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
 
-  @ManyToOne(() => Building, (building) => building.aparments)
+  @ManyToOne(() => Building, (building) => building.aparments, { nullable: true })
   building: Building;
 
-  @OneToMany(() => Warranty, (warranty) => warranty.aparment)
+  @OneToMany(() => Warranty, (warranty) => warranty.aparment, { nullable: true })
   warranties: Warranty[];
 
-  @OneToMany(() => Parking, (parking) => parking.aparment)
+  @OneToMany(() => Parking, (parking) => parking.aparment, { nullable: true })
   parking: Parking[];
 
-  @OneToMany(() => StorageUnit, (storageUnit) => storageUnit.aparment)
+  @OneToMany(() => StorageUnit, (storageUnit) => storageUnit.aparment, { nullable: true })
   storageUnits: StorageUnit[];
 
-  @ManyToOne(() => AparmentType)
+  @ManyToOne(() => AparmentType, { nullable: true })
   @JoinColumn()
   type: AparmentType;
 }

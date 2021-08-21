@@ -88,10 +88,23 @@ export class FileController {
     }
   };
 
+  public massiveLoading = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        
+      const file = req['file'] as File;
+      const logs = await this.fileService.massiveLoading(file);
+      res.status(201).json(logs);
+
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+
   public routes() {
     this.router.post('/', upload.single('file'), this.create);
     this.router.get('/downloadAttach/:id', this.downloadAttachFile);
     this.router.get('/downloadInline/:id', this.downloadInlineFile);
     this.router.post('/signDocument', this.signDocument);
+    this.router.post('/massiveLoading', upload.single('file'), this.massiveLoading);
   }
 }
