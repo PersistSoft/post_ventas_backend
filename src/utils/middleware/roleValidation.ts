@@ -7,6 +7,7 @@ export const roleValidation = (roles: string[]) => {
     const user = req.user as User;
     
     if(!user || (user && !user.role)){
+      //throw 'Missing roles';
       next(Boom.unauthorized('Missing roles'));
     }
 

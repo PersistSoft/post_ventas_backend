@@ -3,6 +3,8 @@ import multer from 'multer';
 import { PSFile } from '../database/entities/file';
 import { FileService } from '../services/file.service';
 import fs from 'fs';
+import { roleValidation } from '../utils/middleware/roleValidation';
+import passport from 'passport';
 
 const upload = multer({ dest: '/tmp' })
 
@@ -105,6 +107,6 @@ export class FileController {
     this.router.get('/downloadAttach/:id', this.downloadAttachFile);
     this.router.get('/downloadInline/:id', this.downloadInlineFile);
     this.router.post('/signDocument', this.signDocument);
-    this.router.post('/massiveLoading', upload.single('file'), this.massiveLoading);
+    this.router.post('/massiveLoading', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), upload.single('file'), this.massiveLoading);
   }
 }

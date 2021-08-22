@@ -29,7 +29,7 @@ export class Aparment {
     type: 'date',
     nullable: true,
   })
-  deliveryDate!: Date;
+  deliveryDate: Date;
 
   @Exclude()
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })

@@ -217,7 +217,7 @@ export class FileService {
                 const newApartment = new Aparment();
                 newApartment.name = `${data[5]}`;
                 
-                newApartment.deliveryDate = data[6] ? data[6] : null;
+                newApartment.deliveryDate = new Date(data[6]);
                 newApartment.type = apartmentType;
                 newApartment.building = building;
               
@@ -241,7 +241,7 @@ export class FileService {
               let storageUnit = await this.storageUnitService.findByName(data[8]);
 
             
-              if(storageUnit === undefined){
+              if(storageUnit === undefined && apartment){
                 const newStorageUnit = new StorageUnit();
                 newStorageUnit.name = data[8];
                 newStorageUnit.aparment = apartment;
@@ -266,7 +266,7 @@ export class FileService {
 
               let parking = await this.parkingService.findByName(data[9]);
 
-              if(parking === undefined){
+              if(parking === undefined && apartment){
                 const newParking = new Parking();
                 newParking.name = data[9];
                 newParking.aparment = apartment;
