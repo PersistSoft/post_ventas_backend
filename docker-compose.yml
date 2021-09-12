@@ -9,14 +9,14 @@ services:
     volumes:
       - postventadata:/var/lib/postgresql/data
     ports: 
-      - 5432:5432
+      - 5431:5432
 
   postventa-api:
     build: .
     environment:
       - type=postgres
       - host=postventa-db
-      - port=5432
+      - port=5431
       - username=postventa
       - password=postventa
       - database=postventa
