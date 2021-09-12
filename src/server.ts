@@ -29,8 +29,6 @@ import dotenv from 'dotenv';
 import compression from 'compression';
 import cors from 'cors';
 
-dotenv.config();
-
 class Server {
   private roleController: RoleController;
   private indexController: IndexController;
@@ -67,7 +65,9 @@ class Server {
     this.app.use(express.json());
     this.app.use(helmet());
     this.app.use(compression());
-    this.app.use(cors());
+    this.app.use(cors({
+      origin: '*'
+  }));
   }
 
   /**
@@ -126,4 +126,5 @@ class Server {
 }
 
 const server = new Server();
+dotenv.config();
 server.start();

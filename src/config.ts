@@ -15,6 +15,13 @@ export class Configuration {
     this.password = process.env.password;
     this.database = process.env.database;
     this.connectionName = process.env.connectionName;
+    console.log('this.type:', this.type);
+    console.log('this.host:', this.host);
+    console.log('this.port:', this.port);
+    console.log('this.username:', this.username);
+    console.log('this.password:', this.password);
+    console.log('this.database:', this.database);
+    
   }
 
   /**

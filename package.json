@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "tsc:prod": "tsc -p tsconfig.json",
     "tsc": "tsc -w",
     "start:dev": "nodemon ./build/server.js"
   },
