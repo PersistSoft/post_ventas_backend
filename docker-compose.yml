@@ -34,7 +34,7 @@ services:
     ports: 
       - "4201:4201"
 
-  postventa-web:
+  postventa-admin:
     build: ./../adminProject/
     depends_on:
       - postventa-api
