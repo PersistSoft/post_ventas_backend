@@ -33,6 +33,13 @@ services:
       - postventa-api
     ports: 
       - "4201:4201"
+
+  postventa-web:
+    build: ./../adminProject/
+    depends_on:
+      - postventa-api
+    ports: 
+      - "4202:4202"
       
 #volumes: 
 #  postventadata-v2:
