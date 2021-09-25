@@ -6,15 +6,16 @@ export class Configuration {
   public password;
   public database;
   public connectionName;
-
+  
   constructor(){
-    this.type = process.env.type;
-    this.host = process.env.host;
-    this.port = process.env.port;
-    this.username = process.env.username;
-    this.password = process.env.password;
-    this.database = process.env.database;
-    this.connectionName = process.env.connectionName;
+    this.type = process.env.type || 'postgres';
+    this.host = process.env.host || 'localhost';
+    this.port = process.env.port || 5432;
+    this.username = process.env.username || 'postventa';
+    this.password = process.env.password || 'postventa';
+    this.database = process.env.database || 'postventa';
+    this.connectionName = process.env.connectionName || 'postventa';
+
     console.log('this.type:', this.type);
     console.log('this.host:', this.host);
     console.log('this.port:', this.port);
