@@ -28,6 +28,7 @@ import dotenv from 'dotenv';
 
 import compression from 'compression';
 import cors from 'cors';
+import { NotifierController } from './controller/notifier.controller';
 
 class Server {
   private roleController: RoleController;
@@ -46,6 +47,7 @@ class Server {
   private authController: AuthController;
   private contactInfoController: ContactInfoController;
   private fileController: FileController;
+  private notifierController: NotifierController;
   private apiPrefix = 'api';
 
   private app: express.Application;
@@ -93,6 +95,7 @@ class Server {
     this.authController = new AuthController();
     this.contactInfoController = new ContactInfoController();
     this.fileController = new FileController();
+    this.notifierController = new NotifierController();
 
     this.app.use(this.indexController.router);
     this.app.use(`/${this.apiPrefix}/roles`, this.roleController.router);
@@ -109,6 +112,7 @@ class Server {
     this.app.use(`/${this.apiPrefix}/status`, this.statusController.router);
     this.app.use(`/${this.apiPrefix}/contacts`, this.contactInfoController.router);
     this.app.use(`/${this.apiPrefix}/files`, this.fileController.router);
+    this.app.use(`/${this.apiPrefix}/notifier`, this.notifierController.router);
 
     this.app.use(`/${this.apiPrefix}/auth`, this.authController.router);
     this.app.use(`/swagger`, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
