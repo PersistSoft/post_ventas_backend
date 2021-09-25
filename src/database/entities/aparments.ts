@@ -7,6 +7,7 @@ import {
   OneToMany,
   ManyToOne,
   JoinColumn,
+  Generated,
 } from 'typeorm';
 
 import { Building } from './building';
@@ -54,4 +55,8 @@ export class Aparment {
   @ManyToOne(() => AparmentType, { nullable: true })
   @JoinColumn()
   type: AparmentType;
+  
+  @Column()
+  @Generated("uuid")
+  uuid: string;
 }
