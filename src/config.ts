@@ -6,6 +6,13 @@ export class Configuration {
   public password;
   public database;
   public connectionName;
+  // SMTP
+  public smtpHost;
+  public smtpPort;
+  public smtpSecure;
+  public smtpRequireTLS;
+  public smtpUser;
+  public smtpPass;
   
   constructor(){
     this.type = process.env.type || 'postgres';
@@ -15,6 +22,15 @@ export class Configuration {
     this.password = process.env.password || 'postventa';
     this.database = process.env.database || 'postventa';
     this.connectionName = process.env.connectionName || 'postventa';
+
+    this.smtpHost = process.env.smtpHost || 'smtp.gmail.com';
+    this.smtpPort = process.env.smtpPort || 587;
+    this.smtpSecure = process.env.smtpSecure || false;
+    this.smtpRequireTLS = process.env.smtpRequireTLS || true;
+    this.smtpUser = process.env.smtpUser || 'pacs.oviyam@gmail.com';
+    this.smtpPass = process.env.smtpPass || 'wjqyyiemaqioedjn';
+
+    console.log('this.smtpHost:', this.smtpHost);    
 
     console.log('this.type:', this.type);
     console.log('this.host:', this.host);
@@ -39,6 +55,19 @@ export class Configuration {
       entities: ["build/database/entities/**/*.js"],
       synchronize: true,
       name: this.connectionName
+    }
+  }
+
+  public smtp(){
+    return {
+      host: this.smtpHost,
+      port: this.smtpPort,
+      secure: this.smtpSecure,
+      requireTLS: this.smtpRequireTLS,
+      auth: {
+        user: this.smtpUser,
+        pass: this.smtpPass
+      }
     }
   }
 }
