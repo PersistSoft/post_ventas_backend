@@ -30,7 +30,7 @@ export class Configuration {
     this.smtpUser = process.env.smtpUser || 'pacs.oviyam@gmail.com';
     this.smtpPass = process.env.smtpPass || 'wjqyyiemaqioedjn';
 
-    console.log('this.smtpHost:', this.smtpHost);    
+    console.log('this.smtpHost:', this.smtpHost);
 
     console.log('this.type:', this.type);
     console.log('this.host:', this.host);
@@ -62,8 +62,8 @@ export class Configuration {
     return {
       host: this.smtpHost,
       port: this.smtpPort,
-      secure: this.smtpSecure,
-      requireTLS: this.smtpRequireTLS,
+      secure: false,
+      requireTLS: true,
       auth: {
         user: this.smtpUser,
         pass: this.smtpPass
