@@ -22,6 +22,12 @@ services:
       - database=postventa
       - connectionName=postventa
       - PORT=3000
+      - smtpHost=smtp.gmail.com;
+      - smtpPort=587;
+      - smtpSecure=false;
+      - smtpRequireTLStrue;
+      - smtpUser=pacs.oviyam@gmail.com;
+      - smtpPass=wjqyyiemaqioedjn;
 #    depends_on:
 #      - postventa-db
     ports: 
