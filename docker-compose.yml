@@ -25,7 +25,7 @@ services:
       - smtpHost=smtp.gmail.com
       - smtpPort=587
       - smtpSecure=false
-      - smtpRequireTLStrue
+      - smtpRequireTLS=true
       - smtpUser=pacs.oviyam@gmail.com
       - smtpPass=wjqyyiemaqioedjn
 #    depends_on:
