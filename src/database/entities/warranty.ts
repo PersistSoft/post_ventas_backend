@@ -30,18 +30,16 @@ export class Warranty {
   @Column({ nullable: true, default: false })
   checked: boolean;
 
-  @Exclude()
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
 
-  @Exclude()
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
 
   @Column({ name: 'client_sign', nullable: true })
   clientSing: number;
 
-  @ManyToOne(() => Aparment, (aparment) => aparment.warranties)
+  @ManyToOne(() => Aparment, (aparment) => aparment.warranties, { eager: true })
   aparment: Aparment;
 
   @ManyToMany((type) => WarrantyType, { eager: true })
@@ -58,13 +56,13 @@ export class Warranty {
   })
   warrantyTypes: WarrantyType[];
 
-  @ManyToOne(() => Status)
+  @ManyToOne(() => Status, { eager: true })
   @JoinColumn()
   status: Status;
 
   @Column({ nullable: true })
   value: number;
 
-  @ManyToOne(() => ContactInfo)
+  @ManyToOne(() => ContactInfo, { eager: true })
   contactInfo: ContactInfo;
 }
