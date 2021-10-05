@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+#  postventa-db:
+#    image: postgres
+#    environment:
+#      - POSTGRES_PASSWORD=postventa
+#      - POSTGRES_USER=postventa
+#    volumes:
+#      - postventadata-v2:/var/lib/postgresql/data
+#    ports: 
+#      - "5433:5432"
+
+  postventa-api:
+    build: .
+    environment:
+      - type=postgres
+      - host=66.94.96.116
+      - port=5432
+      - username=postventa
+      - password=postventa
+      - database=postventa
+      - connectionName=postventa
+      - PORT=3000
+      - smtpHost=smtp.gmail.com
+      - smtpPort=587
+      - smtpSecure=false
+      - smtpRequireTLS=true
+      - smtpUser=pacs.oviyam@gmail.com
+      - smtpPass=wjqyyiemaqioedjn
+#    depends_on:
+#      - postventa-db
+    ports: 
+      - "3000:3000"
+
+  postventa-web:
+    build: ./../post_ventas_frontend/
+    depends_on:
+      - postventa-api
+    ports: 
+      - "4201:4201"
+
+  postventa-admin:
+    build: ./../adminProject/
+    depends_on:
+      - postventa-api
+    ports: 
+      - "4202:4202"
+      
+#volumes: 
+#  postventadata-v2:
+#    driver: local
