@@ -1,6 +1,8 @@
 import { Request, Response, Router } from 'express';
 import { UserService } from '../services/users.service';
 import '../auth/strategies/jwt';
+import { roleValidation } from '../utils/middleware/roleValidation';
+import passport from 'passport';
 
 export class UserController {
   public router: Router;
@@ -54,9 +56,9 @@ export class UserController {
 
   public routes() {
     //this.router.get('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.users);
-    this.router.get('/', this.users);
-    this.router.post('/', this.create);
-    this.router.put('/:id', this.update);
-    this.router.delete('/:id', this.delete);
+    this.router.get('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.users);
+    this.router.post('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.create);
+    this.router.put('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.update);
+    this.router.delete('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.delete);
   }
 }

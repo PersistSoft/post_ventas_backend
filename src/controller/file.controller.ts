@@ -2,7 +2,6 @@ import { Response, Request, Router, NextFunction } from 'express';
 import multer from 'multer';
 import { PSFile } from '../database/entities/file';
 import { FileService } from '../services/file.service';
-import fs from 'fs';
 import { roleValidation } from '../utils/middleware/roleValidation';
 import passport from 'passport';
 

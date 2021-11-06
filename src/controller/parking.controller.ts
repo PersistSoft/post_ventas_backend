@@ -5,9 +5,9 @@ import Boom from '@hapi/boom';
 import { ParkingSchema } from './../utils/schema/parking.schema';
 
 import { ParkingService } from '../services/parking.service';
-import { AparmentService } from '../services/aparments.service';
 import { ParkingDto } from '../dto/parking.dto';
-import { Aparment } from '../database/entities/aparments';
+import { roleValidation } from '../utils/middleware/roleValidation';
+import passport from 'passport';
 
 export class ParkingController {
   public router: Router;
@@ -62,9 +62,9 @@ export class ParkingController {
   }
 
   public routes() {
-    this.router.get('/', this.parkings);
-    this.router.post('/', validationHandler(ParkingSchema), this.create);
-    this.router.put('/:id', this.update);
-    this.router.delete('/:id', this.delete);
+    this.router.get('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.parkings);
+    this.router.post('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), validationHandler(ParkingSchema), this.create);
+    this.router.put('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.update);
+    this.router.delete('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.delete);
   }
 }

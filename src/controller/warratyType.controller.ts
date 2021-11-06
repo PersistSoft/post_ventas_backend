@@ -4,6 +4,8 @@ import { WarrantyTypeDto } from '../dto/warrantyType.dto';
 import { WarrantyTypeService } from './../services/warrantyType.service';
 import { validationHandler } from './../utils/middleware/schemaValidation';
 import { WarrantyTypeSchema } from './../utils/schema/types.schema';
+import { roleValidation } from '../utils/middleware/roleValidation';
+import passport from 'passport';
 
 export class WarrantyTypeController {
   private warrantyTypeService: WarrantyTypeService;
@@ -67,8 +69,8 @@ export class WarrantyTypeController {
 
   public routes() {
     this.router.get('/', this.warrantiesTypes);
-    this.router.post('/', validationHandler(WarrantyTypeSchema), this.create);
-    this.router.put('/:id', this.update);
-    this.router.delete('/:id', this.delete);
+    this.router.post('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), validationHandler(WarrantyTypeSchema), this.create);
+    this.router.put('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.update);
+    this.router.delete('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.delete);
   }
 }

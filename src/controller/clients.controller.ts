@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import Boom from '@hapi/boom';
-import { validationHandler } from './../utils/middleware/schemaValidation';
 
 import { ClientDto } from '../dto/client.dto';
 import { ClientService } from '../services/client.service';
-import { clientSchema } from '../utils/schema/client.schema';
+
+import { roleValidation } from '../utils/middleware/roleValidation';
+import passport from 'passport';
 
 export class ClientController {
   public router: Router;
@@ -64,9 +64,9 @@ export class ClientController {
   }
 
   public routes() {
-    this.router.get('/', this.clients);
-    this.router.post('/', this.create);
-    this.router.put('/:id', this.update);
-    this.router.delete('/:id', this.delete);
+    this.router.get('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.clients);
+    this.router.post('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.create);
+    this.router.put('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.update);
+    this.router.delete('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.delete);
   }
 }

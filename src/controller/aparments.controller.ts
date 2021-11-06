@@ -1,23 +1,13 @@
 import { Response, Request, Router, NextFunction } from 'express';
-import Boom from '@hapi/boom';
-import { validationHandler } from './../utils/middleware/schemaValidation';
-
-import { Aparment } from '../database/entities/aparments';
-import { Building } from '../database/entities/building';
-import { AparmentType } from '../database/entities/aparmentType';
-import { aparmentSchema } from './../utils/schema/aparment.schema';
+import { roleValidation } from '../utils/middleware/roleValidation';
+import passport from 'passport';
 
 import { AparmentService } from './../services/aparments.service';
-import { BuildingService } from './../services/building.service';
-import { AparmentTypeService } from '../services/aparmentType.service';
-import { ApartmentTypeDto } from '../dto/apartmentType.dto';
 import { AparmentDto } from '../dto/aparment.dto';
 
 export class AparmentsController {
   public router: Router;
   private aparmentService: AparmentService;
-  private buildingService: BuildingService;
-  private aparmentTypeService: AparmentTypeService;
 
   constructor() {
     this.init();
@@ -27,8 +17,6 @@ export class AparmentsController {
     this.router = Router();
     this.routes();
     this.aparmentService = new AparmentService();
-    this.buildingService = new BuildingService();
-    this.aparmentTypeService = new AparmentTypeService();
   }
 
   /**
@@ -87,10 +75,10 @@ export class AparmentsController {
   }
 
   public routes() {
-    this.router.get('/', this.aparments);
+    this.router.get('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.aparments);
     this.router.get('/:idBuilding', this.aparmentsByBuildingId);
-    this.router.post('/', this.create);
-    this.router.put('/:id', this.update);
-    this.router.delete('/:id', this.delete);
+    this.router.post('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.create);
+    this.router.put('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.update);
+    this.router.delete('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.delete);
   }
 }
