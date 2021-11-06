@@ -3,6 +3,8 @@ import { NextFunction, Request, Response, Router } from 'express';
 import { BuildingDto } from '../dto/building.dto';
 import { BuildingService } from '../services/building.service';
 import { ProjectService } from './../services/projects.service';
+import { roleValidation } from '../utils/middleware/roleValidation';
+import passport from 'passport';
 
 export class BuildingController {
   public router: Router;
@@ -74,10 +76,10 @@ export class BuildingController {
   }
 
   public routes() {
-    this.router.get('/', this.buildings);
+    this.router.get('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.buildings);
     this.router.get('/:idProject', this.buildingsByProject);
-    this.router.post('/', this.create);
-    this.router.put('/:id', this.update);
-    this.router.delete('/:id', this.delete);
+    this.router.post('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.create);
+    this.router.put('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.update);
+    this.router.delete('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.delete);
   }
 }

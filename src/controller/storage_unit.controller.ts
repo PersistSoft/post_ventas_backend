@@ -1,13 +1,10 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import { validationHandler } from './../utils/middleware/schemaValidation';
-import Boom from '@hapi/boom';
-
-import { StorageUnitSchema } from './../utils/schema/storageUnit.schema';
-
 import { StorageUnitService } from '../services/storage_unit.service';
 import { AparmentService } from '../services/aparments.service';
 import { StorageUnitDto } from '../dto/storageUnit.dto';
-import { Aparment } from '../database/entities/aparments';
+
+import { roleValidation } from '../utils/middleware/roleValidation';
+import passport from 'passport';
 
 export class StorageUnitController {
   public router: Router;
@@ -71,9 +68,9 @@ export class StorageUnitController {
   }
 
   public routes() {
-    this.router.get('/', this.parkings);
-    this.router.post('/', this.create);
-    this.router.put('/:id', this.update);
-    this.router.delete('/:id', this.delete);
+    this.router.get('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.parkings);
+    this.router.post('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.create);
+    this.router.put('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.update);
+    this.router.delete('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.delete);
   }
 }

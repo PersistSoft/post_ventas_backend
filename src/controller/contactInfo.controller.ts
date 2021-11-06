@@ -4,6 +4,8 @@ import { ContactInfoDto } from '../dto/contactInfo.dto';
 import { ContactInfoService } from '../services/contactInfo.service';
 import { validationHandler } from './../utils/middleware/schemaValidation';
 import { ContactInfoSchema } from './../utils/schema/contactInfo.schema';
+import { roleValidation } from '../utils/middleware/roleValidation';
+import passport from 'passport';
 
 export class ContactInfoController {
   public router: Router;
@@ -62,8 +64,8 @@ export class ContactInfoController {
 
   public routes() {
     this.router.get('/', this.index);
-    this.router.post('/', validationHandler(ContactInfoSchema), this.create);
-    this.router.put('/:id', this.update);
-    this.router.delete('/:id', this.delete);
+    this.router.post('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), validationHandler(ContactInfoSchema), this.create);
+    this.router.put('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.update);
+    this.router.delete('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.delete);
   }
 }

@@ -4,6 +4,8 @@ import { AparmentTypeService } from './../services/aparmentType.service';
 import { ApartmentTypeSchema } from './../utils/schema/types.schema';
 import { validationHandler } from './../utils/middleware/schemaValidation';
 import { ApartmentTypeDto } from '../dto/apartmentType.dto';
+import { roleValidation } from '../utils/middleware/roleValidation';
+import passport from 'passport';
 
 export class AparmentTypeController {
   public router: Router;
@@ -65,9 +67,9 @@ export class AparmentTypeController {
   }
 
   public routes() {
-    this.router.get('/', this.aparmentsType);
-    this.router.post('/', validationHandler(ApartmentTypeSchema), this.create);
-    this.router.put('/:id', this.update);
-    this.router.delete('/:id', this.delete);
+    this.router.get('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.aparmentsType);
+    this.router.post('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), validationHandler(ApartmentTypeSchema), this.create);
+    this.router.put('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.update);
+    this.router.delete('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.delete);
   }
 }
