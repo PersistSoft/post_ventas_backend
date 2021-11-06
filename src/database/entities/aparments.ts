@@ -56,7 +56,6 @@ export class Aparment {
   @JoinColumn()
   type: AparmentType;
   
-  @Column()
-  @Generated("uuid")
-  uuid: string;
+  @Column({ nullable: true, unique: true})
+  appartmentKey: string;
 }
