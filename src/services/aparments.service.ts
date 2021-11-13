@@ -39,6 +39,7 @@ export class AparmentService {
 
     return classToPlain(aparment);
   };
+
   /**
    *@param {number}  idBuilding id
    */
@@ -58,7 +59,6 @@ export class AparmentService {
    * @param {AparmentDto} AparmentDto building Dto
    * @param {AparmentType} ApartmentType  entity
    */
-
   public create = async (aparment: AparmentDto) => {
     try {
       
@@ -79,6 +79,48 @@ export class AparmentService {
       const type = await this.aparmentRepository.findByName(name);
       return type;
       
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  public validateAppartment = async (request) => {
+    try {
+
+      console.log('Service request: ',request);
+      const result = await this.aparmentRepository.findByIdAndkey(request);
+      
+      return result;
+
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  /**
+   * Configurate the appartment key
+   * @returns 
+   */
+  public configureAppartment = async () => {
+    try {
+
+      const buildings = await this.buildingService.findAll();
+      const result = Math.random().toString(36).substring(2,5);
+      
+      buildings.map( async building => {
+        const aparments = await this.aparmentRepository.findByBuildingId(building.id);
+
+        aparments.map(async  apprt => {
+          const key = Math.random().toString(36).substring(2,5);
+          apprt.appartmentKey = `T${building.id}${apprt.name}${key}`.toUpperCase();
+          await this.aparmentRepository.save(apprt);
+        });
+      })
+
+      return {
+        response: 'The task was executed'
+      };
+
     } catch (error) {
       throw error;
     }

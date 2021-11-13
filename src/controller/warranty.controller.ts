@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { WarrantyService } from './../services/warranty.service';
 import { WarrantyDto } from '../dto/warranty.dto';
+import { roleValidation } from '../utils/middleware/roleValidation';
+import passport from 'passport';
 
 export class WarrantyController {
   private warrantyService: WarrantyService;
@@ -58,8 +60,8 @@ export class WarrantyController {
 
   public routes() {
     this.router.get('/', this.warranties);
-    this.router.post('/', this.create);
-    this.router.put('/:id', this.update);
-    this.router.delete('/:id', this.delete);
+    this.router.post('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.create);
+    this.router.put('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.update);
+    this.router.delete('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.delete);
   }
 }

@@ -2,8 +2,8 @@ import Boom from '@hapi/boom';
 import {NextFunction, Request, Response, Router} from 'express';
 import { RoleDto } from '../dto/role.dto';
 import { RoleService } from '../services/role.service';
-import { validationHandler} from './../utils/middleware/schemaValidation';
-import { RoleSchema } from './../utils/schema/types.schema';
+import { roleValidation } from '../utils/middleware/roleValidation';
+import passport from 'passport';
  
 export class RoleController {
   public router: Router;
@@ -65,9 +65,9 @@ export class RoleController {
   } 
 
   public routes(){
-    this.router.get('/', this.index);
-    this.router.post('/', this.create);
-    this.router.put('/:id', this.update);
-    this.router.delete('/:id', this.delete);
+    this.router.get('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.index);
+    this.router.post('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.create);
+    this.router.put('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.update);
+    this.router.delete('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.delete);
   }
 }
