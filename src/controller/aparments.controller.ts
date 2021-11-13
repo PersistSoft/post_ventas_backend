@@ -74,11 +74,50 @@ export class AparmentsController {
     res.send('delete');
   }
 
+  /**
+   * Validate apartment
+   * @param req 
+   * @param res 
+   * @param next 
+   */
+  public validateApartment = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+      let request = req.body;
+      const appartment = await this.aparmentService.validateAppartment(request);
+
+      if(appartment){
+        res.json(appartment);
+      }
+
+      res.status(401).json({
+        message: 'Not found'
+      });
+
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  };
+
+  public configurate = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+     await this.aparmentService.configureAppartment();
+     res.status(201).json({
+       message: 'The appartments ware configurated'
+     });
+
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  };
+
   public routes() {
     this.router.get('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.aparments);
     this.router.get('/:idBuilding', this.aparmentsByBuildingId);
     this.router.post('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.create);
     this.router.put('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.update);
     this.router.delete('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.delete);
-  }
+    this.router.post('/validate', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.validateApartment);
+    this.router.post('/configurate', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.configurate);  }
 }
