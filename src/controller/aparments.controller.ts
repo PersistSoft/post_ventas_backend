@@ -23,7 +23,11 @@ export class AparmentsController {
    * Get all Aparments
    */
 
-  public aparments = async (req: Request, res: Response, next: NextFunction) => {
+  public aparments = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       let aparments = await this.aparmentService.findAll();
       res.status(200).json(aparments);
@@ -36,7 +40,11 @@ export class AparmentsController {
    * Get Aparments By Building Id
    */
 
-  public aparmentsByBuildingId = async (req: Request, res: Response, next: NextFunction) => {
+  public aparmentsByBuildingId = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       let idBuil: number = parseInt(req.params.idBuilding);
       let aparments = await this.aparmentService.findByBuildingId(idBuil);
@@ -76,48 +84,82 @@ export class AparmentsController {
 
   /**
    * Validate apartment
-   * @param req 
-   * @param res 
-   * @param next 
+   * @param req
+   * @param res
+   * @param next
    */
-  public validateApartment = async (req: Request, res: Response, next: NextFunction) => {
+  public validateApartment = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
-
+      console.log('req', req.body);
       let request = req.body;
       const appartment = await this.aparmentService.validateAppartment(request);
 
-      if(appartment){
+      if (appartment) {
         res.json(appartment);
       }
 
       res.status(401).json({
-        message: 'Not found'
+        message: 'Not found',
       });
-
     } catch (error) {
       res.status(500).json(error);
     }
   };
 
-  public configurate = async (req: Request, res: Response, next: NextFunction) => {
+  public configurate = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
-
-     await this.aparmentService.configureAppartment();
-     res.status(201).json({
-       message: 'The appartments ware configurated'
-     });
-
+      await this.aparmentService.configureAppartment();
+      res.status(201).json({
+        message: 'The appartments ware configurated',
+      });
     } catch (error) {
       res.status(500).json(error);
     }
   };
 
   public routes() {
-    this.router.get('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.aparments);
+    this.router.get(
+      '/',
+      passport.authenticate('jwt', { session: false }),
+      roleValidation(['Admin']),
+      this.aparments
+    );
     this.router.get('/:idBuilding', this.aparmentsByBuildingId);
-    this.router.post('/', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.create);
-    this.router.put('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.update);
-    this.router.delete('/:id', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.delete);
-    this.router.post('/validate', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.validateApartment);
-    this.router.post('/configurate', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.configurate);  }
+    this.router.post(
+      '/',
+      passport.authenticate('jwt', { session: false }),
+      roleValidation(['Admin']),
+      this.create
+    );
+    this.router.put(
+      '/:id',
+      passport.authenticate('jwt', { session: false }),
+      roleValidation(['Admin']),
+      this.update
+    );
+    this.router.delete(
+      '/:id',
+      passport.authenticate('jwt', { session: false }),
+      roleValidation(['Admin']),
+      this.delete
+    );
+    // this.router.post('/validate', passport.authenticate('jwt', { session: false }), roleValidation(['Admin']), this.validateApartment);
+    // TODO Revisar la respuesta 401
+
+    this.router.post('/validate', this.validateApartment);
+    this.router.post(
+      '/configurate',
+      passport.authenticate('jwt', { session: false }),
+      roleValidation(['Admin']),
+      this.configurate
+    );
+  }
 }
