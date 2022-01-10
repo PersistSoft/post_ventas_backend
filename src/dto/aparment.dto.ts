@@ -7,4 +7,5 @@ export interface AparmentDto {
   deliveryDate?: Date;
   building: BuildingDto;
   type: ApartmentTypeDto;
+  appartmentKey: string;
 }
