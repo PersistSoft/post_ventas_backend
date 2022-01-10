@@ -64,6 +64,7 @@ export class AparmentService {
       
       const building = await this.buildingService.findById(aparment.building.id);
       const type = await this.apartmentTypeService.findById(aparment.type.id);
+      aparment.appartmentKey = this.getApprtmetnKey(building.id, aparment.name);
       
       const newAparment = await this.aparmentRepository.save(aparment);
       return classToPlain(newAparment) as Aparment;
@@ -105,14 +106,12 @@ export class AparmentService {
     try {
 
       const buildings = await this.buildingService.findAll();
-      const result = Math.random().toString(36).substring(2,5);
       
       buildings.map( async building => {
-        const aparments = await this.aparmentRepository.findByBuildingId(building.id);
+        const aparments = await this.aparmentRepository.findByBuildingIdAndKeyNull(building.id);
 
         aparments.map(async  apprt => {
-          const key = Math.random().toString(36).substring(2,5);
-          apprt.appartmentKey = `T${building.id}${apprt.name}${key}`.toUpperCase();
+          apprt.appartmentKey = this.getApprtmetnKey(building.id,apprt.name);
           await this.aparmentRepository.save(apprt);
         });
       })
@@ -125,4 +124,16 @@ export class AparmentService {
       throw error;
     }
   };
+
+  /**
+   * Generate apprtment key
+   * @param buildingId 
+   * @param appartmentName 
+   * @returns 
+   */
+  public getApprtmetnKey(buildingId: number, appartmentName: string): string{
+    const key = Math.random().toString(36).substring(2,5);
+    appartmentName = appartmentName?.split(' ').join('');
+    return `T${buildingId}${appartmentName}${key}`.toUpperCase();
+  }
 }

@@ -60,7 +60,8 @@ export class AparmentsController {
   public create = async (req: Request, res: Response, next: NextFunction) => {
     try {
       let aparmentDto: AparmentDto = req.body;
-
+      console.log("aparmentDto ", aparmentDto);
+      
       const newAparmentDto = await this.aparmentService.create(aparmentDto);
       res.status(201).json(aparmentDto);
     } catch (error) {
@@ -100,11 +101,13 @@ export class AparmentsController {
 
       if (appartment) {
         res.json(appartment);
+      } else {
+        res.status(401).json({
+          message: 'Not found',
+        });
       }
 
-      res.status(401).json({
-        message: 'Not found',
-      });
+      
     } catch (error) {
       res.status(500).json(error);
     }

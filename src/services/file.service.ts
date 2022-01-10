@@ -220,7 +220,8 @@ export class FileService {
                 newApartment.deliveryDate = new Date(data[6]);
                 newApartment.type = apartmentType;
                 newApartment.building = building;
-              
+                
+                newApartment.appartmentKey = this.apartmentService.getApprtmetnKey(building.id, newApartment.name);
                 apartment = await this.apartmentService.create(newApartment);
                 apartmentsInserted++;
               }
